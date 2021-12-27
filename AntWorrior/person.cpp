@@ -9,7 +9,7 @@ Person::Person(GLdouble x, GLdouble y, GLdouble z) {
 	this->gunModel = Model_3DS();
 	this->gunTex.LoadBMP("media/gun.bmp");
 	this->gunModel.Load("media/gun.3ds");
-	this->gunModel.Materials[0].tex = this->gunTex;
+	this->gunModel.Materials[3].tex = this->gunTex;
 	this->gunModel.scale = 0.004;
 }
 

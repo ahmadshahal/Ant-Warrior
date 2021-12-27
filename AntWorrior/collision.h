@@ -2,9 +2,9 @@
 #include <iostream>
 using namespace std;
 
-int border[201][201];
+static int border[201][201];
 
-void handleBorder(){
+static void handleBorder(){
 
 	// Fills the 2D array with 1.
 	memset(border, 1, sizeof border);

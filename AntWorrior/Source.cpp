@@ -9,8 +9,8 @@
 #include <texture.h>
 #include <time.h>
 #include <random>
-#include "collision.h"
 #include "camera.h"
+#include "collision.h"
 #include "Sound.h"
 #include "enviroment.h"
 #include "ant.h"
@@ -150,7 +150,7 @@ void handleKeybordInput()
 	int z = abs(myCamera.Position.z);
 	if (keys['W'] && border[x][z])
         myCamera.MoveForward(0.05);
-    if (keys['S'] /* && border[x][z] */)
+    if (keys['S'] /*&& border[x][z]*/)
         myCamera.MoveForward(-0.05);
     if (keys['A'] && border[x][z])
         myCamera.MoveRight(-0.05);

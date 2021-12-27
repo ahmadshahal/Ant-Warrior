@@ -1,3 +1,5 @@
+#pragma once
+
 #include <windows.h>		// Header File For Windows
 #include <gl/GL.h>				// Header File For The OpenGL32 Library
 #include <gl/glu.h>			// Header File For The GLu32 Library
@@ -5,6 +7,7 @@
 #include <fstream>
 #include <math.h>
 
+// #include "collision.h"
 
 #include "camera.h"
 
@@ -138,13 +141,27 @@ void Camera::Render(void)
 
 void Camera::MoveForward(GLfloat Distance)
 {
-	Position = Position + (View * Distance);
+	Vector3dStruct tempPos = Position + (View * Distance);
+	/*
+	if(border[(int) tempPos.x][(int) tempPos.z]) {
+		Position = tempPos;
+		Position.y = 3;
+	}
+	*/
+	Position = tempPos;
 	Position.y = 3;
 }
 
 void Camera::MoveRight(GLfloat Distance)
 {
-	Position = Position + (RightVector * Distance);
+	Vector3dStruct tempPos = Position + (RightVector * Distance);
+	/*
+	if(border[(int) tempPos.x][(int) tempPos.z]) {
+		Position = tempPos;
+		Position.y = 3;
+	}
+	*/
+	Position = tempPos;
 	Position.y = 3;
 }
 
