@@ -9,6 +9,7 @@
 #include <texture.h>
 #include <time.h>
 #include <random>
+#include "collision.h"
 #include "camera.h"
 #include "Sound.h"
 #include "enviroment.h"
@@ -77,13 +78,12 @@ int InitGL(GLvoid) // All Setup For OpenGL Goes Here
 {
 	myCamera = Camera();
 
-	// After scalling will be => 120 / 8 = 15
+	// Before scalling will be => 120 / 8 = 15
 	myCamera.Position.x = 120.0;
-	// After scalling will be => 3 / 8 = 0.375
+	// Before scalling will be => 3 / 8 = 0.375
 	myCamera.Position.y = 3;
-	// After scalling will be => -16 / 8 = -2
+	// Before scalling will be => -16 / 8 = -2
 	myCamera.Position.z = -16.0;
-	// MyCamera.RotateY(90.0);
 
 	glShadeModel(GL_SMOOTH);                           // Enable Smooth Shading
 	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);              // Black Background
@@ -103,6 +103,8 @@ int InitGL(GLvoid) // All Setup For OpenGL Goes Here
 	initialize.InitOpenAL(); // initialize sound from OpenAl
 	shootingSound = Sound("media/shot.wav");
 	sound2 = Sound("media/music.wav");
+
+	handleBorder();
 
 	person = new Person(myCamera.Position.x + 0.1, myCamera.Position.y - 0.1, myCamera.Position.z - 0.37);
 
@@ -143,14 +145,18 @@ void handleKeybordInput()
 		myCamera.MoveUpward(0.03);
 	if (keys['E'])
 		myCamera.MoveUpward(-0.03);
-	if (keys['S'])
-		myCamera.MoveForward(-0.05);
-	if (keys['W'])
-		myCamera.MoveForward(0.05);
-	if (keys['A'])
-		myCamera.MoveRight(-0.05);
-	if (keys['D'])
-		myCamera.MoveRight(0.05);
+	// ==================================
+	int x = myCamera.Position.x;
+	int z = abs(myCamera.Position.z);
+	if (keys['W'] && border[x][z])
+        myCamera.MoveForward(0.05);
+    if (keys['S'] /* && border[x][z] */)
+        myCamera.MoveForward(-0.05);
+    if (keys['A'] && border[x][z])
+        myCamera.MoveRight(-0.05);
+    if (keys['D'] && border[x][z])
+        myCamera.MoveRight(0.05);
+	// ==================================
 	if (keys['M'])
 		sound2.Play();
 }
@@ -356,6 +362,7 @@ LRESULT CALLBACK WndProc(HWND hWnd,     // Handle For This Window
 	// Pass All Unhandled Messages To DefWindowProc
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
+
 GLvoid KillGLWindow(GLvoid) // Properly Kill The Window
 {
 	if (fullscreen) // Are We In Fullscreen Mode?

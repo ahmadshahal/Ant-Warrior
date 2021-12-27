@@ -66,6 +66,7 @@
     <ClInclude Include="3DTexture.h" />
     <ClInclude Include="ant.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="collision.h" />
     <ClInclude Include="enviroment.h" />
     <ClInclude Include="Model_3DS.h" />
     <ClInclude Include="person.h" />
