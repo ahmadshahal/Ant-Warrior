@@ -649,3 +649,21 @@ void Enviroment::drawFanGlass()
 	glColor3d(1, 1, 1);
 	glDisable(GL_BLEND);
 }
+
+void Enviroment::drawX(GLdouble x, GLdouble y, GLdouble z)
+{
+	glLineWidth(1.5);
+	glPushMatrix();
+	glTranslated(x, y, z);
+	glRotated(45, 0, 0, 1);
+	glBegin(GL_LINES);
+
+	glVertex3d(0 - 0.05, 0, 0);
+	glVertex3d(0 + 0.05, 0, 0);
+	
+	glVertex3d(0, 0 - 0.05, 0);
+	glVertex3d(0, 0 + 0.05, 0);
+
+	glEnd();
+	glPopMatrix();
+}

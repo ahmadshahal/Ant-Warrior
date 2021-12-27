@@ -27,9 +27,12 @@ Person* person;
 
 Camera myCamera;
 int mouseX = 0, mouseY = 0;
-int previousMouseX = 0, previousMouseY = 0;
 bool isLClicked = 0, isRClicked = 0;
 
+// ======================================================================================
+
+
+// ======================================================================================
 int motherBoardBottomTex, motherBoardWall;
 int ramTex, desktopTex, gpuFront, gpuBack, cpuTex, ssdTex;
 double fanRotate = 0;
@@ -176,6 +179,8 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 		shootingSoundIsPlaying = false;
 		shootingSound.Stop();
 	}
+
+	Enviroment::drawX(myCamera.Position.x, myCamera.Position.y, myCamera.Position.z - 3);
 
 	person->x = myCamera.Position.x + 0.1;
 	person->y = myCamera.Position.y - 0.1;
