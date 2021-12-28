@@ -650,19 +650,23 @@ void Enviroment::drawFanGlass()
 	glDisable(GL_BLEND);
 }
 
-void Enviroment::drawX(GLdouble x, GLdouble y, GLdouble z)
+void Enviroment::drawX(GLdouble x, GLdouble y, GLdouble z, double rotationAngle)
 {
-	glLineWidth(1.5);
+	glLineWidth(2);
 	glPushMatrix();
 	glTranslated(x, y, z);
+	rotationAngle -= 90;
+	if(rotationAngle <= 0)
+		rotationAngle = 360 + rotationAngle;
+	glRotated(rotationAngle, 0, 1, 0);
 	glRotated(45, 0, 0, 1);
 	glBegin(GL_LINES);
 
-	glVertex3d(0 - 0.05, 0, 0);
-	glVertex3d(0 + 0.05, 0, 0);
+	glVertex3d(0 - 0.004, 0, 0);
+	glVertex3d(0 + 0.004, 0, 0);
 	
-	glVertex3d(0, 0 - 0.05, 0);
-	glVertex3d(0, 0 + 0.05, 0);
+	glVertex3d(0, 0 - 0.004, 0);
+	glVertex3d(0, 0 + 0.004, 0);
 
 	glEnd();
 	glPopMatrix();

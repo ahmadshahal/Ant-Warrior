@@ -15,5 +15,5 @@ public:
 	static void drawRamGlass();
 	static void drawCpuGlass();
 	static void drawFanGlass();
-	static void drawX(GLdouble x, GLdouble y, GLdouble z);
+	static void drawX(GLdouble x, GLdouble y, GLdouble z, double rotationAngle);
 };

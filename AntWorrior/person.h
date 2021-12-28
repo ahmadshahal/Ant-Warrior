@@ -14,5 +14,5 @@ public:
 	GLTexture gunTex;
 	Model_3DS gunModel;
 	Person(GLdouble x, GLdouble y, GLdouble z);
-	void draw();
+	void draw(double rotationAngle);
 };
