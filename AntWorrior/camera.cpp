@@ -114,6 +114,11 @@ void Camera::RotateY(GLfloat Angle)
 {
 	RotatedY += Angle;
 	//Rotate viewdir around the up vector:
+	// /*
+	Up.x = 0;
+	Up.y = 1;
+	Up.z = 0;
+	// */
 	View = NormalizeVector3d(View * cosf(Angle * PIdiv180) - RightVector * sinf(Angle * PIdiv180));
 	//now compute the new RightVector (by cross product)
 	RightVector = CrossProduct(&View, &Up);

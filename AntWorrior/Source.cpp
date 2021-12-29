@@ -32,6 +32,7 @@ bool isLClicked = 0, isRClicked = 0;
 // ======================================================================================
 
 double horizontalAngle = 90;
+double verticalAngle = 0;
 double R = 0.3;
 
 // ======================================================================================
@@ -153,11 +154,21 @@ void handleKeybordInput()
 			horizontalAngle = 360 + horizontalAngle;
 		}
 	}
+	if (keys[VK_DOWN]) {
+		myCamera.RotateX(-0.2);
+		verticalAngle -= 0.2;
+		if(verticalAngle <= 0) {
+			verticalAngle = 360 + verticalAngle;
+		}
+	}
+	if (keys[VK_UP]) {
+		myCamera.RotateX(0.2);
+		verticalAngle += 0.2;
+		if(verticalAngle >= 360) {
+			verticalAngle -= 360;
+		}
+	}
 	// ==================================
-	if (keys[VK_DOWN])
-		myCamera.RotateX(-0.1);
-	if (keys[VK_UP])
-		myCamera.RotateX(0.1);
 	if (keys['Q'])
 		myCamera.MoveUpward(0.03);
 	if (keys['E'])
@@ -197,22 +208,20 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 	double lookingX = cos(horizontalAngle * PI / 180.0) * R;
 	double lookingZ = sin(horizontalAngle * PI / 180.0) * R;
 
+	
+	double verticalLookingZ = cos(verticalAngle * PI / 180.0) * R;
+	double lookingY = sin(verticalAngle * PI / 180.0) * R;
+
 	Enviroment::drawX(
 		myCamera.Position.x + lookingX,
-		myCamera.Position.y - 0.01,
-		(myCamera.Position.z) - lookingZ, horizontalAngle);
+		myCamera.Position.y /* + lookingY */,
+		(myCamera.Position.z) - lookingZ /* - verticalLookingZ */, horizontalAngle, verticalAngle);
 
 	person->x = myCamera.Position.x + lookingX;
-	person->y = myCamera.Position.y;
-	person->z = myCamera.Position.z - lookingZ;
+	person->y = myCamera.Position.y /* + lookingY */;
+	person->z = myCamera.Position.z - lookingZ /* - verticalLookingZ */;
 
-	/*
-	person->x = myCamera.View.x + 0.08;
-	person->y = myCamera.View.y - 0.1;
-	person->z = myCamera.View.z - 0.4;
-	*/
-
-	person->draw(horizontalAngle);
+	person->draw(horizontalAngle, verticalAngle);
 
 	// Making the world larger :)
 	glScaled(8, 8, 8);
