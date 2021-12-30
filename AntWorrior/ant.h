@@ -13,6 +13,7 @@ class Ant {
 public:
 	GLdouble x, y, z;
 	GLdouble rotationAngle;
+	bool moveForward;
 	GLTexture antTex;
 	Model_3DS antModel;
 	Ant(GLdouble x, GLdouble y, GLdouble z);

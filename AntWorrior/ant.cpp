@@ -1,17 +1,20 @@
 #define _CRT_SECURE_NO_DEPRECATE
 #pragma once
 #include "ant.h"
+#include "collision.h"
 
 Ant::Ant(GLdouble x, GLdouble y, GLdouble z) {
+	handleBorder();
 	this->x = x;
 	this->y = y;
 	this->z = z;
+	this->moveForward = 1;
 	this->rotationAngle = 0 + (double)(rand()) / ((double)(RAND_MAX / (360 - (0))));
 	this->antModel = Model_3DS();
 	this->antTex.LoadBMP("media/ant.bmp");
 	this->antModel.Load("media/ant.3ds");
 	this->antModel.Materials[0].tex = this->antTex;
-	this->antModel.scale = 0.01;
+	this->antModel.scale = 0.01 * 140;
 }
 
 void Ant::draw() {
@@ -26,5 +29,20 @@ void Ant::draw() {
 }
 
 void Ant::move() {
-	
+	if(moveForward) {
+		if(border[(int) this->x + 1][abs((int) this->z)]) {
+			this->x += 0.5;
+		}
+		else {
+			moveForward = !moveForward;
+		}
+	}
+	else {
+		if(border[(int) this->x - 1][abs((int) this->z)]) {
+			this->x -= 0.5;
+		}
+		else {
+			moveForward = !moveForward;
+		}
+	}
 }

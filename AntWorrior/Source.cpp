@@ -118,7 +118,7 @@ int InitGL(GLvoid) // All Setup For OpenGL Goes Here
 		// TODO: While loop checking if the (x, z) aren't false.
 		GLdouble x = 1 + (double)(rand()) / ((double)(RAND_MAX / (25 - (1))));
 		GLdouble z = -25 + (double)(rand()) / ((double)(RAND_MAX / (-1 - (-25))));
-		ants.push_back(new Ant(x, 0.12, z));
+		ants.push_back(new Ant(x * 140, 0.12 * 140, z * 140));
 	}
 
 	return TRUE; // Initialization Went OK
@@ -203,10 +203,12 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-	myCamera.Render();
 	handleKeybordInput();
 
 	handleMouseInput(mouseX, mouseY, isLClicked, isRClicked);
+
+	myCamera.Render();
+
 
 	// Stopping the shooting sound after 2 seconds.
 	if(shootingSoundIsPlaying && time(0) - shootingSoundStartTime == 2) {
@@ -253,12 +255,13 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 		bullets.erase(it);
 	}
 
-	// Making the world larger :)
-	glScaled(140, 140, 140);
-
 	for(int i = 0; i < ants.size(); i++) {
 		ants[i]->draw();
+		ants[i]->move();
 	}
+
+	// Making the world larger :)
+	glScaled(140, 140, 140);
 
 	Enviroment::drawMotherBoard(motherBoardBottomTex, motherBoardWall);
 
