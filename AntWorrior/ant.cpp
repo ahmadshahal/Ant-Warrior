@@ -9,6 +9,7 @@ Ant::Ant(GLdouble x, GLdouble y, GLdouble z) {
 	this->y = y;
 	this->z = z;
 	this->moveForward = 1;
+	this->moveRight = 1;
 	this->rotationAngle = 0 + (double)(rand()) / ((double)(RAND_MAX / (360 - (0))));
 	this->antModel = Model_3DS();
 	this->antTex.LoadBMP("media/ant.bmp");
@@ -29,20 +30,41 @@ void Ant::draw() {
 }
 
 void Ant::move() {
-	if(moveForward) {
-		if(border[(int) this->x + 1][abs((int) this->z)]) {
-			this->x += 0.5;
+	int random = rand() % 2;
+	if(random == 0) {
+		if(moveForward) {
+			if(border[(int) (this->x + 0.5)][abs((int) this->z)]) {
+				this->x += 0.5;
+			}
+			else {
+				moveForward = !moveForward;
+			}
 		}
 		else {
-			moveForward = !moveForward;
+			if(border[(int) (this->x - 0.5)][abs((int) this->z)]) {
+				this->x -= 0.5;
+			}
+			else {
+				moveForward = !moveForward;
+			}
 		}
 	}
 	else {
-		if(border[(int) this->x - 1][abs((int) this->z)]) {
-			this->x -= 0.5;
+		if(moveRight) {
+			if(border[(int) this->x][(int) (abs((int) this->z + 0.5))]) {
+				this->z += 0.5;
+			}
+			else {
+				moveRight = !moveRight;
+			}
 		}
 		else {
-			moveForward = !moveForward;
+			if(border[(int) this->x][(int) (abs((int) this->z - 0.5))]) {
+				this->z -= 0.5;
+			}
+			else {
+				moveRight = !moveRight;
+			}
 		}
 	}
 }
