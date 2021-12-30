@@ -205,21 +205,19 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 		shootingSound.Stop();
 	}
 
-	double lookingX = cos(horizontalAngle * PI / 180.0) * R;
-	double lookingZ = sin(horizontalAngle * PI / 180.0) * R;
-
-	
-	double verticalLookingZ = cos(verticalAngle * PI / 180.0) * R;
 	double lookingY = sin(verticalAngle * PI / 180.0) * R;
+	double R2 = cos(verticalAngle * PI / 180.0) * R;
+	double lookingX = cos(horizontalAngle * PI / 180.0) * R2;
+	double lookingZ = sin(horizontalAngle * PI / 180.0) * R2;
 
 	Enviroment::drawX(
 		myCamera.Position.x + lookingX,
-		myCamera.Position.y /* + lookingY */,
-		(myCamera.Position.z) - lookingZ /* - verticalLookingZ */, horizontalAngle, verticalAngle);
+		myCamera.Position.y + lookingY,
+		(myCamera.Position.z) - lookingZ, horizontalAngle, verticalAngle);
 
 	person->x = myCamera.Position.x + lookingX;
-	person->y = myCamera.Position.y /* + lookingY */;
-	person->z = myCamera.Position.z - lookingZ /* - verticalLookingZ */;
+	person->y = myCamera.Position.y + lookingY;
+	person->z = myCamera.Position.z - lookingZ;
 
 	person->draw(horizontalAngle, verticalAngle);
 
