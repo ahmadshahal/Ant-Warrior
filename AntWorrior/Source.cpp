@@ -87,7 +87,7 @@ int InitGL(GLvoid) // All Setup For OpenGL Goes Here
 	myCamera = Camera();
 
 	// Before scalling will be => 120 / 8 = 15
-	myCamera.Position.x = 120.0;
+	myCamera.Position.x = 120;
 	// Before scalling will be => 3 / 8 = 0.375
 	myCamera.Position.y = 3;
 	// Before scalling will be => -16 / 8 = -2
@@ -178,18 +178,19 @@ void handleKeybordInput()
 	// ==================================
 	int x = myCamera.Position.x;
 	int z = abs(myCamera.Position.z);
-	if (keys['W'] && border[x][z])
+	if (keys['W'] /* && border[x][z] */)
         myCamera.MoveForward(0.05);
     if (keys['S'] /*&& border[x][z]*/)
         myCamera.MoveForward(-0.05);
-    if (keys['A'] && border[x][z])
+    if (keys['A'] /*&& border[x][z]*/)
         myCamera.MoveRight(-0.05);
-    if (keys['D'] && border[x][z])
+    if (keys['D'] /*&& border[x][z]*/)
         myCamera.MoveRight(0.05);
 	// ==================================
 	if (keys['M'])
 		sound2.Play();
 	if(keys[VK_SPACE]) {
+		// Play shooting sound.
 		bullets.push_back(new Bullet(myCamera.Position.x,
 			myCamera.Position.y,
 			myCamera.Position.z,

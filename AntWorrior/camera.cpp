@@ -7,7 +7,7 @@
 #include <fstream>
 #include <math.h>
 
-// #include "collision.h"
+#include "collision.h"
 
 #include "camera.h"
 
@@ -88,6 +88,7 @@ float operator*(Vector3dStruct v, Vector3dStruct u) // dot product
 
 Camera::Camera()
 {
+	handleBorder();
 	Position = Vector3dCreate(0.0, 0.0, 0.0);
 	View = Vector3dCreate(0.0, 0.0, -1.0);
 	RightVector = Vector3dCreate(1.0, 0.0, 0.0);
@@ -147,27 +148,19 @@ void Camera::Render(void)
 void Camera::MoveForward(GLfloat Distance)
 {
 	Vector3dStruct tempPos = Position + (View * Distance);
-	/*
-	if(border[(int) tempPos.x][(int) tempPos.z]) {
+	if(border[(int) floor(tempPos.x)][(int) floor(tempPos.z)]) {
 		Position = tempPos;
 		Position.y = 3;
 	}
-	*/
-	Position = tempPos;
-	Position.y = 3;
 }
 
 void Camera::MoveRight(GLfloat Distance)
 {
 	Vector3dStruct tempPos = Position + (RightVector * Distance);
-	/*
-	if(border[(int) tempPos.x][(int) tempPos.z]) {
+	if(border[(int) floor(tempPos.x)][(int) floor(tempPos.z)]) {
 		Position = tempPos;
 		Position.y = 3;
 	}
-	*/
-	Position = tempPos;
-	Position.y = 3;
 }
 
 void Camera::MoveUpward(GLfloat Distance)
