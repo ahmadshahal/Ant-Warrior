@@ -47,6 +47,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>GLAUX.lib;GLU32.lib;glut.lib;OPENGL32.lib;glut32.lib;OPENAL32.lib;alut.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -65,6 +66,7 @@
   <ItemGroup>
     <ClInclude Include="3DTexture.h" />
     <ClInclude Include="ant.h" />
+    <ClInclude Include="bullet.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="enviroment.h" />
@@ -72,10 +74,12 @@
     <ClInclude Include="person.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="texture.h" />
+    <ClInclude Include="utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3DTexture.cpp" />
     <ClCompile Include="ant.cpp" />
+    <ClCompile Include="bullet.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="enviroment.cpp" />
     <ClCompile Include="Model_3DS.cpp" />

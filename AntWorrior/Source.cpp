@@ -15,12 +15,14 @@
 #include "enviroment.h"
 #include "ant.h"
 #include "person.h"
+#include "bullet.h"
 using namespace std;
 
 // ======================================================================================
 // =================================OUR VARIABLES========================================
 
 vector<Ant*> ants;
+vector<Bullet*> bullets;
 int initialNumOfAnts = 15;
 
 Person* person;
@@ -147,21 +149,21 @@ void handleKeybordInput()
 			horizontalAngle -= 360;
 		}
 	}
-	if (keys[VK_RIGHT]) {
+	else if (keys[VK_RIGHT]) {
 		myCamera.RotateY(-0.2);
 		horizontalAngle -= 0.2;
 		if(horizontalAngle <= 0) {
 			horizontalAngle = 360 + horizontalAngle;
 		}
 	}
-	if (keys[VK_DOWN]) {
+	else if (keys[VK_DOWN]) {
 		myCamera.RotateX(-0.2);
 		verticalAngle -= 0.2;
 		if(verticalAngle <= 0) {
 			verticalAngle = 360 + verticalAngle;
 		}
 	}
-	if (keys[VK_UP]) {
+	else if (keys[VK_UP]) {
 		myCamera.RotateX(0.2);
 		verticalAngle += 0.2;
 		if(verticalAngle >= 360) {
@@ -187,6 +189,14 @@ void handleKeybordInput()
 	// ==================================
 	if (keys['M'])
 		sound2.Play();
+	if(keys[VK_SPACE]) {
+		bullets.push_back(new Bullet(myCamera.Position.x,
+			myCamera.Position.y,
+			myCamera.Position.z,
+			myCamera.View.x,
+			myCamera.View.y,
+			myCamera.View.z));
+	}
 }
 
 int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
@@ -220,6 +230,21 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 	person->z = myCamera.Position.z - lookingZ;
 
 	person->draw(horizontalAngle, verticalAngle);
+	
+	vector<vector<Bullet*>::iterator> toDeleteBullets; 
+
+	for(vector<Bullet*>::iterator it = bullets.begin(); it != bullets.end(); it++) {
+		(*it)->move();
+		(*it)->draw();
+		if((*it)->x > 25 || (*it)->x < 1
+			|| (*it)->z < -25 || (*it)->z > -1
+			|| (*it)->y > 30 || (*it)->y < 0) {
+			// toDeleteBullets.push_back(it);
+		}
+	}
+	for(auto it : toDeleteBullets) {
+		bullets.erase(it);
+	}
 
 	// Making the world larger :)
 	glScaled(8, 8, 8);
@@ -676,4 +701,11 @@ int WINAPI WinMain(HINSTANCE hInstance,     // Instance
 	// Shutdown
 	KillGLWindow();      // Kill The Window
 	return (msg.wParam); // Exit The Program
+}
+
+int main(HINSTANCE hInstance,     // Instance
+				   HINSTANCE hPrevInstance, // Previous Instance
+				   LPSTR lpCmdLine,         // Command Line Parameters
+				   int nCmdShow) {
+	return WinMain(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
 }
