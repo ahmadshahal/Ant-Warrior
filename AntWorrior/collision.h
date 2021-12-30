@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-static int border[201][201];
+static int border[3600][3600];
 
 static void handleBorder(){
 
@@ -10,50 +10,51 @@ static void handleBorder(){
 	memset(border, 1, sizeof border);
 
 	// Out of box
-	for(int i = 0; i < 201; i++){
+	for(int i = 0; i < 3517; i++){
     
 		// Z:
-		border[8][i] = 0;
-		border[199][i] = 0;
+		border[140][i] = 0;
+		border[3482][i] = 0;
 
 		// X:
-		border[i][8] = 0;
-		border[i][199] = 0;
+		border[i][140] = 0;
+		border[i][3482] = 0;
 	}
 
 	// ========================================
 	// GPU
-	for(int i = 14; i < 129; i++){
-		border[i][88] = 0;
-		border[i][112] = 0;
+	for(int i = 245; i < 2322; i++){
+		border[i][1540] = 0;
+		border[i][1960] = 0;
     
 		// Outside
-		border[i][87] = 0;
-		border[i][113] = 0;
+		border[i][1522] = 0;
+		border[i][1977] = 0;
 
 		// Inside
-		border[i][89] = 0;
-		border[i][111] = 0;
+		border[i][1557] = 0;
+		border[i][1942] = 0;
 	}
-	for(int j = 87; j < 113; j++){
-		border[15][j] = 0;
-		border[128][j] = 0;
+	for(int j = 1522; j < 1977; j++){
+		border[262][j] = 0;
+		border[2240][j] = 0;
 
 		// Outside
-		border[14][j] = 0;
-		border[129][j] = 0;
+		border[245][j] = 0;
+		border[2257][j] = 0;
     
 		//Inside
-		border[16][j] = 0;
-		border[127][j] = 0;
+		border[280][j] = 0;
+		border[2222][j] = 0;
 	}
 	// GPU Door
-	for(int i = 100; i < 113; i++){
-		border[129][i] = 1;
-		border[128][i] = 1;
-		border[127][i] = 1;
+	for(int i = 1750; i < 1977; i++){
+		border[2257][i] = 1;
+		border[2240][i] = 1;
+		border[2222][i] = 1;
 	}
 
+	/*
 	// ========================================
 	// CPU
 	for(int i = 135; i < 177; i++){
@@ -196,4 +197,5 @@ static void handleBorder(){
 			border[i][j] = 0;
 		}
 	}
+	*/
 }

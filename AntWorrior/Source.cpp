@@ -86,12 +86,10 @@ int InitGL(GLvoid) // All Setup For OpenGL Goes Here
 {
 	myCamera = Camera();
 
-	// Before scalling will be => 120 / 8 = 15
-	myCamera.Position.x = 120;
-	// Before scalling will be => 3 / 8 = 0.375
-	myCamera.Position.y = 3;
-	// Before scalling will be => -16 / 8 = -2
-	myCamera.Position.z = -16.0;
+	
+	myCamera.Position.x = 2100;
+	myCamera.Position.y = 60;
+	myCamera.Position.z = -875.0;
 
 	glShadeModel(GL_SMOOTH);                           // Enable Smooth Shading
 	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);              // Black Background
@@ -179,13 +177,13 @@ void handleKeybordInput()
 	int x = myCamera.Position.x;
 	int z = abs(myCamera.Position.z);
 	if (keys['W'] /* && border[x][z] */)
-        myCamera.MoveForward(0.05);
+        myCamera.MoveForward(1);
     if (keys['S'] /*&& border[x][z]*/)
-        myCamera.MoveForward(-0.05);
+        myCamera.MoveForward(-1);
     if (keys['A'] /*&& border[x][z]*/)
-        myCamera.MoveRight(-0.05);
+        myCamera.MoveRight(-1);
     if (keys['D'] /*&& border[x][z]*/)
-        myCamera.MoveRight(0.05);
+        myCamera.MoveRight(1);
 	// ==================================
 	if (keys['M'])
 		sound2.Play();
@@ -237,11 +235,16 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 	for(vector<Bullet*>::iterator it = bullets.begin(); it != bullets.end(); it++) {
 		(*it)->move();
 		(*it)->draw();
-		if((*it)->x > 200 || (*it)->x < 8
-			|| (*it)->z < -200 || (*it)->z > -8
-			|| (*it)->y > 200 || (*it)->y < 0
-			|| !border[(int) ceil((*it)->x)][(int) ceil((*it)->z)]) {
+		if((*it)->x > 3500 || (*it)->x < 140
+			|| (*it)->z < -3500 || (*it)->z > -140
+			|| (*it)->y > 3500 || (*it)->y < 0
+			|| !border[(int) ceil((*it)->x)][(int) ceil((*it)->z)]
+			) {
 			cout << "========================" << endl;
+			cout << (*it)->x << endl;
+			cout << (*it)->y << endl;
+			cout << (*it)->z << endl;
+			cout << myCamera.Position.z << endl;
 			cout << "========================" << endl;
 			toDeleteBullets.push_back(it);
 		}
@@ -251,7 +254,7 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 	}
 
 	// Making the world larger :)
-	glScaled(8, 8, 8);
+	glScaled(140, 140, 140);
 
 	for(int i = 0; i < ants.size(); i++) {
 		ants[i]->draw();
