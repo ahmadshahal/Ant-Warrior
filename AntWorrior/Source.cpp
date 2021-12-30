@@ -188,7 +188,9 @@ void handleKeybordInput()
 	if (keys['M'])
 		sound2.Play();
 	if(keys[VK_SPACE]) {
-		// Play shooting sound.
+		shootingSound.Play();
+		shootingSoundIsPlaying = true;
+		shootingSoundStartTime = time(0);
 		bullets.push_back(new Bullet(myCamera.Position.x,
 			myCamera.Position.y,
 			myCamera.Position.z,
@@ -265,19 +267,6 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 				toDeleteAnts.push_back(it2);
 				toDeleteBullets.push_back(it);
 				break;
-			}
-			else {
-				// cout << "============================" << endl;
-				// cout << "Bullet: " << endl;
-				// cout << (*it)->x << endl;
-				// cout << (*it)->y << endl;
-				// cout << (*it)->z << endl;
-				
-				// cout << "Ant: " << endl;
-				// cout << (*it2)->x << endl;
-				// cout << (*it2)->y << endl;
-				// cout << (*it2)->z << endl;
-				// cout << "============================" << endl;
 			}
 		}
 	}
