@@ -10,15 +10,15 @@ static void handleBorder(){
 	memset(border, 1, sizeof border);
 
 	// Out of box
-	for(int i = 0; i < 3517; i++){
+	for(int i = 1 * 140; i <= 140 * 25; i++){
     
 		// Z:
-		border[140][i] = 0;
-		border[3482][i] = 0;
+		border[1 * 140][i] = 0;
+		border[140 * 25][i] = 0;
 
 		// X:
-		border[i][140] = 0;
-		border[i][3482] = 0;
+		border[i][1 * 140] = 0;
+		border[i][140 * 25] = 0;
 	}
 
 	// ========================================
