@@ -233,6 +233,7 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 	person->draw(horizontalAngle, verticalAngle);
 	
 	vector<vector<Bullet*>::iterator> toDeleteBullets; 
+	vector<vector<Ant*>::iterator> toDeleteAnts; 
 
 	for(vector<Bullet*>::iterator it = bullets.begin(); it != bullets.end(); it++) {
 		(*it)->move();
@@ -242,17 +243,50 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 			|| (*it)->y > 3500 || (*it)->y < 0
 			|| !border[(int) ceil((*it)->x)][(int) ceil((*it)->z)]
 			) {
-			cout << "========================" << endl;
-			cout << (*it)->x << endl;
-			cout << (*it)->y << endl;
-			cout << (*it)->z << endl;
-			cout << myCamera.Position.z << endl;
-			cout << "========================" << endl;
+			// cout << "========================" << endl;
+			// cout << (*it)->x << endl;
+			// cout << (*it)->y << endl;
+			// cout << (*it)->z << endl;
+			// cout << myCamera.Position.z << endl;
+			// cout << "========================" << endl;
 			toDeleteBullets.push_back(it);
+			continue;
+		}
+		for(vector<Ant*>::iterator it2 = ants.begin(); it2 != ants.end(); it2++) {
+			if((*it)->y <= (*it2)->y + 60
+				&& (*it)->y >= (*it2)->y - 60
+				&& (*it)->z <= (*it2)->z + 60
+				&& (*it)->z >= (*it2)->z - 60
+				&& (*it)->x <= (*it2)->x + 60
+				&& (*it)->x >= (*it2)->x - 60) {
+				cout << "============================" << endl;
+				cout << "KILLED" << endl;
+				cout << "============================" << endl;
+				toDeleteAnts.push_back(it2);
+				toDeleteBullets.push_back(it);
+				break;
+			}
+			else {
+				// cout << "============================" << endl;
+				// cout << "Bullet: " << endl;
+				// cout << (*it)->x << endl;
+				// cout << (*it)->y << endl;
+				// cout << (*it)->z << endl;
+				
+				// cout << "Ant: " << endl;
+				// cout << (*it2)->x << endl;
+				// cout << (*it2)->y << endl;
+				// cout << (*it2)->z << endl;
+				// cout << "============================" << endl;
+			}
 		}
 	}
 	for(auto it : toDeleteBullets) {
 		bullets.erase(it);
+	}
+
+	for(auto it : toDeleteAnts) {
+		ants.erase(it);
 	}
 
 	for(int i = 0; i < ants.size(); i++) {

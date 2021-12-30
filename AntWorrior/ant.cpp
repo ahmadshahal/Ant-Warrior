@@ -33,16 +33,16 @@ void Ant::move() {
 	int random = rand() % 2;
 	if(random == 0) {
 		if(moveForward) {
-			if(border[(int) (this->x + 0.5)][abs((int) this->z)]) {
-				this->x += 0.5;
+			if(border[(int) (this->x + 0.2)][abs((int) this->z)]) {
+				this->x += 0.2;
 			}
 			else {
 				moveForward = !moveForward;
 			}
 		}
 		else {
-			if(border[(int) (this->x - 0.5)][abs((int) this->z)]) {
-				this->x -= 0.5;
+			if(border[(int) (this->x - 0.2)][abs((int) this->z)]) {
+				this->x -= 0.2;
 			}
 			else {
 				moveForward = !moveForward;
@@ -51,16 +51,16 @@ void Ant::move() {
 	}
 	else {
 		if(moveRight) {
-			if(border[(int) this->x][(int) (abs((int) this->z + 0.5))]) {
-				this->z += 0.5;
+			if(border[(int) this->x][(int) (abs((int) this->z + 0.2))]) {
+				this->z += 0.2;
 			}
 			else {
 				moveRight = !moveRight;
 			}
 		}
 		else {
-			if(border[(int) this->x][(int) (abs((int) this->z - 0.5))]) {
-				this->z -= 0.5;
+			if(border[(int) this->x][(int) (abs((int) this->z - 0.2))]) {
+				this->z -= 0.2;
 			}
 			else {
 				moveRight = !moveRight;
