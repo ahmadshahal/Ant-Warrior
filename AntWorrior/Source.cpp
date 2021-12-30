@@ -236,10 +236,13 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 	for(vector<Bullet*>::iterator it = bullets.begin(); it != bullets.end(); it++) {
 		(*it)->move();
 		(*it)->draw();
-		if((*it)->x > 25 || (*it)->x < 1
-			|| (*it)->z < -25 || (*it)->z > -1
-			|| (*it)->y > 30 || (*it)->y < 0) {
-			// toDeleteBullets.push_back(it);
+		if((*it)->x > 200 || (*it)->x < 8
+			|| (*it)->z < -200 || (*it)->z > -8
+			|| (*it)->y > 200 || (*it)->y < 0
+			|| !border[(int) ceil((*it)->x)][(int) ceil((*it)->z)]) {
+			cout << "========================" << endl;
+			cout << "========================" << endl;
+			toDeleteBullets.push_back(it);
 		}
 	}
 	for(auto it : toDeleteBullets) {
