@@ -188,9 +188,9 @@ void handleKeybordInput()
 	if (keys['M'])
 		sound2.Play();
 	if(keys[VK_SPACE]) {
-		shootingSound.Play();
-		shootingSoundIsPlaying = true;
-		shootingSoundStartTime = time(0);
+		// shootingSound.Play();
+		// shootingSoundIsPlaying = true;
+		// shootingSoundStartTime = time(0);
 		bullets.push_back(new Bullet(myCamera.Position.x,
 			myCamera.Position.y,
 			myCamera.Position.z,
@@ -255,12 +255,12 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 			continue;
 		}
 		for(vector<Ant*>::iterator it2 = ants.begin(); it2 != ants.end(); it2++) {
-			if((*it)->y <= (*it2)->y + 60
-				&& (*it)->y >= (*it2)->y - 60
-				&& (*it)->z <= (*it2)->z + 60
-				&& (*it)->z >= (*it2)->z - 60
-				&& (*it)->x <= (*it2)->x + 60
-				&& (*it)->x >= (*it2)->x - 60) {
+			if((*it)->y <= (*it2)->y + 50
+				&& (*it)->y >= (*it2)->y - 50
+				&& (*it)->z <= (*it2)->z + 50
+				&& (*it)->z >= (*it2)->z - 50
+				&& (*it)->x <= (*it2)->x + 50
+				&& (*it)->x >= (*it2)->x - 50) {
 				cout << "============================" << endl;
 				cout << "KILLED" << endl;
 				cout << "============================" << endl;

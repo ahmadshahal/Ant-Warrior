@@ -10,14 +10,14 @@ Bullet::Bullet(GLdouble x, GLdouble y, GLdouble z, GLdouble lookX, GLdouble look
 	this->lookX = lookX;
 	this->lookY = lookY;
 	this->lookZ = lookZ;
-	this->counter = 0;
+	this->counter = 1;
 }
 
 void Bullet::draw() {
 	glColor3d(1, 1, 1);
 	glPushMatrix();
 	glTranslated(this->x, this->y, this->z);
-	drawSphere(0.1, 20, 20);
+	drawSphere(0.01, 20, 20);
 	glPopMatrix();
 }
 
