@@ -50,6 +50,7 @@ Sound sound2;
 
 GLUquadric *quadric = gluNewQuadric();
 
+bool fire = true;
 // ======================================================================================
 
 // ======================================================================================
@@ -187,16 +188,20 @@ void handleKeybordInput()
 	// ==================================
 	if (keys['M'])
 		sound2.Play();
-	if(keys[VK_SPACE]) {
+	if(keys[VK_SPACE] && fire) {
 		// shootingSound.Play();
 		// shootingSoundIsPlaying = true;
 		// shootingSoundStartTime = time(0);
+		fire = false;
 		bullets.push_back(new Bullet(myCamera.Position.x,
 			myCamera.Position.y,
 			myCamera.Position.z,
 			myCamera.View.x,
 			myCamera.View.y,
 			myCamera.View.z));
+	}
+	if(!keys[VK_SPACE]){
+		fire = true;
 	}
 }
 
@@ -302,12 +307,6 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 		glTranslated(3, .0, .0);
 	}
 	glPopMatrix();
-	// Drawing STORAGE glass
-	// =======================================
-	glPushMatrix();
-	Enviroment::drawStorageGlass();
-	glPopMatrix();
-
 	// Drawing RAMs
 	// =======================================
 	glPushMatrix();
@@ -316,13 +315,6 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 		glTranslated(1.5, .0, .0);
 	}
 	glPopMatrix();
-	// Drawing RAM glass
-	// =======================================
-	glPushMatrix();
-	glTranslated(1.5, 0, 0);
-	Enviroment::drawRamGlass();
-	glPopMatrix();
-
 	// Drawing Fan
 	// =======================================
 	glPushMatrix();
@@ -335,13 +327,6 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 
 	glPopMatrix();
 
-	// Drawing CPU glass
-	// =======================================
-	glPushMatrix();
-	glTranslated(1.5, .0, .0);
-	Enviroment::drawCpuGlass();
-	glPopMatrix();
-
 	// Drawing Pins
 	// =======================================
 	glPushMatrix();
@@ -349,6 +334,23 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 		Enviroment::drawPin();
 		glTranslated(2, .0, .0);
 	}
+	glPopMatrix();
+	// Drawing CPU glass
+	// =======================================
+	glPushMatrix();
+	glTranslated(1.5, .0, .0);
+	Enviroment::drawCpuGlass();
+	glPopMatrix();
+	// Drawing RAM glass
+	// =======================================
+	glPushMatrix();
+	glTranslated(1.5, 0, 0);
+	Enviroment::drawRamGlass();
+	glPopMatrix();
+	// Drawing STORAGE glass
+	// =======================================
+	glPushMatrix();
+	Enviroment::drawStorageGlass();
 	glPopMatrix();
 	// Drawing FAN glass
 	// =======================================

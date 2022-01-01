@@ -6,7 +6,7 @@
 #include <gl/glut.h> // Header File For The GLu32 Library
 #include <gl/glu.h>
 #include "3DTexture.h"
-#include <Model_3DS.h>
+#include "Model_3DS.h"
 
 class Person {
 public:

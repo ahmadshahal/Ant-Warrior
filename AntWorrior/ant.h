@@ -7,7 +7,7 @@
 #include <gl/glu.h>
 #include <random>
 #include "3DTexture.h"
-#include <Model_3DS.h>
+#include "Model_3DS.h"
 
 class Ant {
 public:

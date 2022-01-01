@@ -148,7 +148,7 @@ void Camera::Render(void)
 void Camera::MoveForward(GLfloat Distance)
 {
 	Vector3dStruct tempPos = Position + (View * Distance);
-	if(border[(int) tempPos.x][(int) tempPos.z]) {
+	if(border[(int) tempPos.x][abs((int) tempPos.z)]) {
 		Position = tempPos;
 		Position.y = 60;
 	}
@@ -157,7 +157,7 @@ void Camera::MoveForward(GLfloat Distance)
 void Camera::MoveRight(GLfloat Distance)
 {
 	Vector3dStruct tempPos = Position + (RightVector * Distance);
-	if(border[(int)tempPos.x][(int)tempPos.z]) {
+	if(border[(int)tempPos.x][abs((int) tempPos.z)]) {
 		Position = tempPos;
 		Position.y = 60;
 	}
