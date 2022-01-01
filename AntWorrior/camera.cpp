@@ -115,11 +115,11 @@ void Camera::RotateY(GLfloat Angle)
 {
 	RotatedY += Angle;
 	//Rotate viewdir around the up vector:
-	// /*
+	
 	Up.x = 0;
 	Up.y = 1;
 	Up.z = 0;
-	// */
+	
 	View = NormalizeVector3d(View * cosf(Angle * PIdiv180) - RightVector * sinf(Angle * PIdiv180));
 	//now compute the new RightVector (by cross product)
 	RightVector = CrossProduct(&View, &Up);
@@ -150,7 +150,7 @@ void Camera::MoveForward(GLfloat Distance)
 	Vector3dStruct tempPos = Position + (View * Distance);
 	if(border[(int) tempPos.x][abs((int) tempPos.z)]) {
 		Position = tempPos;
-		Position.y = 60;
+		Position.y = 0.4 * 140;
 	}
 }
 
@@ -159,7 +159,7 @@ void Camera::MoveRight(GLfloat Distance)
 	Vector3dStruct tempPos = Position + (RightVector * Distance);
 	if(border[(int)tempPos.x][abs((int) tempPos.z)]) {
 		Position = tempPos;
-		Position.y = 60;
+		Position.y = 0.4 * 140;
 	}
 }
 

@@ -27,6 +27,9 @@ int initialNumOfAnts = 15;
 
 Person* person;
 
+int SCALE = 140;
+bool canFire = true;
+
 Camera myCamera;
 int mouseX = 0, mouseY = 0;
 bool isLClicked = 0, isRClicked = 0;
@@ -50,7 +53,6 @@ Sound sound2;
 
 GLUquadric *quadric = gluNewQuadric();
 
-bool fire = true;
 // ======================================================================================
 
 // ======================================================================================
@@ -87,10 +89,14 @@ int InitGL(GLvoid) // All Setup For OpenGL Goes Here
 {
 	myCamera = Camera();
 
+	// 15
+	myCamera.Position.x = 15 * SCALE;
 	
-	myCamera.Position.x = 2100;
-	myCamera.Position.y = 60;
-	myCamera.Position.z = -875.0;
+	// 0.4
+	myCamera.Position.y = 0.4 * SCALE;
+	
+	// 6.2
+	myCamera.Position.z = -6.2 * SCALE;
 
 	glShadeModel(GL_SMOOTH);                           // Enable Smooth Shading
 	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);              // Black Background
@@ -116,10 +122,14 @@ int InitGL(GLvoid) // All Setup For OpenGL Goes Here
 	person = new Person(myCamera.Position.x + 0.1, myCamera.Position.y - 0.1, myCamera.Position.z - 0.37);
 
 	for(int i = 0; i < initialNumOfAnts; i++) {
-		// TODO: While loop checking if the (x, z) aren't false.
-		GLdouble x = 1 + (double)(rand()) / ((double)(RAND_MAX / (25 - (1))));
-		GLdouble z = -25 + (double)(rand()) / ((double)(RAND_MAX / (-1 - (-25))));
-		ants.push_back(new Ant(x * 140, 0.12 * 140, z * 140));
+		while(true) {
+			int x = 1 + (double)(rand()) / ((double)(RAND_MAX / (25 - (1))));
+			int z = -25 + (double)(rand()) / ((double)(RAND_MAX / (-1 - (-25))));
+			if(border[x * SCALE][z * SCALE] != 0 && border[x * SCALE][z * SCALE] != 2) {
+				ants.push_back(new Ant(x * SCALE, 0.12 * SCALE, z * SCALE));
+				break;
+			}
+		}
 	}
 
 	return TRUE; // Initialization Went OK
@@ -175,24 +185,22 @@ void handleKeybordInput()
 	if (keys['E'])
 		myCamera.MoveUpward(-0.03);
 	// ==================================
-	int x = myCamera.Position.x;
-	int z = abs(myCamera.Position.z);
-	if (keys['W'] /* && border[x][z] */)
+	if (keys['W'])
         myCamera.MoveForward(1);
-    if (keys['S'] /*&& border[x][z]*/)
+    if (keys['S'])
         myCamera.MoveForward(-1);
-    if (keys['A'] /*&& border[x][z]*/)
+    if (keys['A'])
         myCamera.MoveRight(-1);
-    if (keys['D'] /*&& border[x][z]*/)
+    if (keys['D'])
         myCamera.MoveRight(1);
 	// ==================================
 	if (keys['M'])
 		sound2.Play();
-	if(keys[VK_SPACE] && fire) {
+	if(keys[VK_SPACE] && canFire) {
 		// shootingSound.Play();
 		// shootingSoundIsPlaying = true;
 		// shootingSoundStartTime = time(0);
-		fire = false;
+		canFire = false;
 		bullets.push_back(new Bullet(myCamera.Position.x,
 			myCamera.Position.y,
 			myCamera.Position.z,
@@ -201,7 +209,7 @@ void handleKeybordInput()
 			myCamera.View.z));
 	}
 	if(!keys[VK_SPACE]){
-		fire = true;
+		canFire = true;
 	}
 }
 
@@ -245,27 +253,24 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 	for(vector<Bullet*>::iterator it = bullets.begin(); it != bullets.end(); it++) {
 		(*it)->move();
 		(*it)->draw();
-		if((*it)->x > 3500 || (*it)->x < 140
-			|| (*it)->z < -3500 || (*it)->z > -140
-			|| (*it)->y > 3500 || (*it)->y < 0
+		if((*it)->x > 25 * SCALE || (*it)->x < 1 * SCALE
+			|| (*it)->z < -25 * SCALE || (*it)->z > -1 * SCALE
+			|| (*it)->y > 25 * SCALE || (*it)->y < 0
 			|| !border[(int) ceil((*it)->x)][(int) ceil((*it)->z)]
 			) {
-			// cout << "========================" << endl;
-			// cout << (*it)->x << endl;
-			// cout << (*it)->y << endl;
-			// cout << (*it)->z << endl;
-			// cout << myCamera.Position.z << endl;
-			// cout << "========================" << endl;
+			cout << "========================" << endl;
+			cout << "GONE" << endl;
+			cout << "========================" << endl;
 			toDeleteBullets.push_back(it);
 			continue;
 		}
 		for(vector<Ant*>::iterator it2 = ants.begin(); it2 != ants.end(); it2++) {
-			if((*it)->y <= (*it2)->y + 50
-				&& (*it)->y >= (*it2)->y - 50
-				&& (*it)->z <= (*it2)->z + 50
-				&& (*it)->z >= (*it2)->z - 50
-				&& (*it)->x <= (*it2)->x + 50
-				&& (*it)->x >= (*it2)->x - 50) {
+			if((*it)->y <= (*it2)->y + 0.3 * SCALE
+				&& (*it)->y >= (*it2)->y - 0.3 * SCALE
+				&& (*it)->z <= (*it2)->z + 0.3 * SCALE
+				&& (*it)->z >= (*it2)->z - 0.3 * SCALE
+				&& (*it)->x <= (*it2)->x + 0.3 * SCALE
+				&& (*it)->x >= (*it2)->x - 0.3 * SCALE) {
 				cout << "============================" << endl;
 				cout << "KILLED" << endl;
 				cout << "============================" << endl;
@@ -289,7 +294,7 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 	}
 
 	// Making the world larger :)
-	glScaled(140, 140, 140);
+	glScaled(SCALE, SCALE, SCALE);
 
 	Enviroment::drawMotherBoard(motherBoardBottomTex, motherBoardWall);
 
