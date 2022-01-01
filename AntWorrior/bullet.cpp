@@ -17,12 +17,12 @@ void Bullet::draw() {
 	glColor3d(1, 1, 1);
 	glPushMatrix();
 	glTranslated(this->x, this->y, this->z);
-	drawSphere(0.01, 20, 20);
+	drawSphere(2, 20, 20);
 	glPopMatrix();
 }
 
 void Bullet::move() {
-	counter += 0.1;
+	counter += 0.01;
 	this->x = (this->x) + (this->lookX * counter);
 	this->y = (this->y) + (this->lookY * counter);
 	this->z = (this->z) + (this->lookZ * counter);

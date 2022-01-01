@@ -10,9 +10,9 @@
 
 class Person {
 public:
-	GLdouble x, y, z;
 	GLTexture gunTex;
 	Model_3DS gunModel;
-	Person(GLdouble x, GLdouble y, GLdouble z);
-	void draw(double horizontalAngle, double verticalAngle);
+	Person();
+	void draw();
+	void drawX();
 };

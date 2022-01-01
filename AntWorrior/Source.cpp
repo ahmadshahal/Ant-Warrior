@@ -36,9 +36,6 @@ bool isLClicked = 0, isRClicked = 0;
 
 // ======================================================================================
 
-double horizontalAngle = 90;
-double verticalAngle = 0;
-double R = 0.3;
 
 // ======================================================================================
 int motherBoardBottomTex, motherBoardWall;
@@ -119,7 +116,7 @@ int InitGL(GLvoid) // All Setup For OpenGL Goes Here
 
 	handleBorder();
 
-	person = new Person(myCamera.Position.x + 0.1, myCamera.Position.y - 0.1, myCamera.Position.z - 0.37);
+	person = new Person();
 
 	for(int i = 0; i < initialNumOfAnts; i++) {
 		while(true) {
@@ -142,10 +139,6 @@ void handleMouseInput(int mouseX, int mouseY, bool isLClicked, bool isRClicked)
 		shootingSoundIsPlaying = true;
 		shootingSoundStartTime = time(0);
 	}
-	// myCamera.RotateY(-0.1 * ((mouseX - previousMouseX)));
-	// myCamera.RotateX(-0.1 * ((mouseY - previousMouseY)));
-	// previousMouseX = mouseX;
-	// previousMouseY = mouseY;
 }
 
 void handleKeybordInput()
@@ -153,31 +146,15 @@ void handleKeybordInput()
 	// ==================================
 	if (keys[VK_LEFT]) {
 		myCamera.RotateY(0.2);
-		horizontalAngle += 0.2;
-		if(horizontalAngle >= 360) {
-			horizontalAngle -= 360;
-		}
 	}
 	else if (keys[VK_RIGHT]) {
 		myCamera.RotateY(-0.2);
-		horizontalAngle -= 0.2;
-		if(horizontalAngle <= 0) {
-			horizontalAngle = 360 + horizontalAngle;
-		}
 	}
 	else if (keys[VK_DOWN]) {
 		myCamera.RotateX(-0.2);
-		verticalAngle -= 0.2;
-		if(verticalAngle <= 0) {
-			verticalAngle = 360 + verticalAngle;
-		}
 	}
 	else if (keys[VK_UP]) {
 		myCamera.RotateX(0.2);
-		verticalAngle += 0.2;
-		if(verticalAngle >= 360) {
-			verticalAngle -= 360;
-		}
 	}
 	// ==================================
 	if (keys['Q'])
@@ -222,6 +199,9 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 
 	handleMouseInput(mouseX, mouseY, isLClicked, isRClicked);
 
+	person->drawX();
+	person->draw();
+
 	myCamera.Render();
 
 
@@ -231,22 +211,6 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 		shootingSound.Stop();
 	}
 
-	double lookingY = sin(verticalAngle * PI / 180.0) * R;
-	double R2 = cos(verticalAngle * PI / 180.0) * R;
-	double lookingX = cos(horizontalAngle * PI / 180.0) * R2;
-	double lookingZ = sin(horizontalAngle * PI / 180.0) * R2;
-
-	Enviroment::drawX(
-		myCamera.Position.x + lookingX,
-		myCamera.Position.y + lookingY,
-		(myCamera.Position.z) - lookingZ, horizontalAngle, verticalAngle);
-
-	person->x = myCamera.Position.x + lookingX;
-	person->y = myCamera.Position.y + lookingY;
-	person->z = myCamera.Position.z - lookingZ;
-
-	person->draw(horizontalAngle, verticalAngle);
-	
 	vector<vector<Bullet*>::iterator> toDeleteBullets; 
 	vector<vector<Ant*>::iterator> toDeleteAnts; 
 
