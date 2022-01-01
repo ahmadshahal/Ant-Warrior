@@ -50,6 +50,12 @@ Sound sound2;
 
 GLUquadric *quadric = gluNewQuadric();
 
+bool lighting =true;
+GLfloat pos [] = {1750, 525, -1750, 1};
+GLfloat ambient [] = {1, 1, 1, 1};
+GLfloat diffues [] = {1, 1, 1, 1};
+GLfloat specular [] = {0, 0, 0, 1};
+GLfloat shin [] = {90};
 // ======================================================================================
 
 // ======================================================================================
@@ -128,7 +134,12 @@ int InitGL(GLvoid) // All Setup For OpenGL Goes Here
 			}
 		}
 	}
-
+	glEnable(GL_LIGHT0);
+	glLightfv(GL_LIGHT0, GL_POSITION, pos);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffues);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+	glLightfv(GL_LIGHT0, GL_SHININESS, shin);
 	return TRUE; // Initialization Went OK
 }
 
@@ -228,6 +239,22 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 			toDeleteBullets.push_back(it);
 			continue;
 		}
+		if((*it)->x > 2240 && (*it)->x < 2380
+		&& (*it)->z < -3500 && (*it)->z > -3430
+		|| (*it)->y > 140 && (*it)->y < 210
+		//&& !border[(int) ceil((*it)->x)][(int) ceil((*it)->z)]
+		) {
+			if(lighting){
+				glEnable(GL_LIGHTING);
+				glEnable(GL_LIGHT0);
+				lighting = !lighting;
+			}else{
+				glDisable(GL_LIGHTING);
+				lighting = !lighting;
+			}
+		toDeleteBullets.push_back(it);
+		continue;
+		}
 		for(vector<Ant*>::iterator it2 = ants.begin(); it2 != ants.end(); it2++) {
 			if((*it)->y <= (*it2)->y + 0.3 * SCALE
 				&& (*it)->y >= (*it2)->y - 0.3 * SCALE
@@ -259,6 +286,8 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 
 	// Making the world larger :)
 	glScaled(SCALE, SCALE, SCALE);
+
+	Enviroment::drawSleepbutton(ssdTex);
 
 	Enviroment::drawMotherBoard(motherBoardBottomTex, motherBoardWall);
 
