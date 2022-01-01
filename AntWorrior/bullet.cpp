@@ -22,7 +22,7 @@ void Bullet::draw() {
 }
 
 void Bullet::move() {
-	counter += 0.01;
+	counter += 0.05;
 	this->x = (this->x) + (this->lookX * counter);
 	this->y = (this->y) + (this->lookY * counter);
 	this->z = (this->z) + (this->lookZ * counter);

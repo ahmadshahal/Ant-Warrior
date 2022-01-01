@@ -126,10 +126,18 @@ int InitGL(GLvoid) // All Setup For OpenGL Goes Here
 
 	for(int i = 0; i < initialNumOfAnts; i++) {
 		while(true) {
-			int x = 1 + (double)(rand()) / ((double)(RAND_MAX / (25 - (1))));
-			int z = -25 + (double)(rand()) / ((double)(RAND_MAX / (-1 - (-25))));
-			if(border[x * SCALE][z * SCALE] != 0 && border[x * SCALE][z * SCALE] != 2) {
-				ants.push_back(new Ant(x * SCALE, 0.12 * SCALE, z * SCALE));
+			int x = 2 + (double)(rand()) / ((double)(RAND_MAX / (24 - (2))));
+			int z = abs(-24 + (double)(rand()) / ((double)(RAND_MAX / (-2 - (-24)))));
+			if(border[x * SCALE][z * SCALE] != 0 && border[x * SCALE][z * SCALE] != 2
+				&& border[x * SCALE + 1][z * SCALE] != 0 && border[x * SCALE + 1][z * SCALE] != 2
+				&& border[x * SCALE - 1][z * SCALE] != 0 && border[x * SCALE - 1][z * SCALE] != 2
+				&& border[x * SCALE][z * SCALE + 1] != 0 && border[x * SCALE][z * SCALE + 1] != 2
+				&& border[x * SCALE][z * SCALE - 1] != 0 && border[x * SCALE][z * SCALE - 1] != 2
+				&& border[x * SCALE + 1][z * SCALE + 1] != 0 && border[x * SCALE + 1][z * SCALE + 1] != 2
+				&& border[x * SCALE - 1][z * SCALE - 1] != 0 && border[x * SCALE - 1][z * SCALE - 1] != 2
+				&& border[x * SCALE + 1][z * SCALE - 1] != 0 && border[x * SCALE + 1][z * SCALE - 1] != 2
+				&& border[x * SCALE - 1][z * SCALE + 1] != 0 && border[x * SCALE - 1][z * SCALE + 1] != 2) {
+				ants.push_back(new Ant(x * SCALE, 0.12 * SCALE, z * SCALE * -1));
 				break;
 			}
 		}
@@ -231,7 +239,7 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 		if((*it)->x > 25 * SCALE || (*it)->x < 1 * SCALE
 			|| (*it)->z < -25 * SCALE || (*it)->z > -1 * SCALE
 			|| (*it)->y > 25 * SCALE || (*it)->y < 0
-			|| !border[(int) ceil((*it)->x)][(int) ceil((*it)->z)]
+			|| !border[(int) ceil((*it)->x)][abs((int) ceil((*it)->z))]
 			) {
 			cout << "========================" << endl;
 			cout << "GONE" << endl;
@@ -248,12 +256,13 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 				glEnable(GL_LIGHTING);
 				glEnable(GL_LIGHT0);
 				lighting = !lighting;
-			}else{
+			}
+			else{
 				glDisable(GL_LIGHTING);
 				lighting = !lighting;
 			}
-		toDeleteBullets.push_back(it);
-		continue;
+			toDeleteBullets.push_back(it);
+			continue;
 		}
 		for(vector<Ant*>::iterator it2 = ants.begin(); it2 != ants.end(); it2++) {
 			if((*it)->y <= (*it2)->y + 0.3 * SCALE
