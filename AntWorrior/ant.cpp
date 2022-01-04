@@ -37,12 +37,12 @@ void Ant::move(GLdouble myX, GLdouble myZ) {
 	myX -= this->x;
 	myZ -= this->z;
 
-	const float transfer = (180.0 / 3.141592653589793238463);
+	const float CONSTANT = (180.0 / 3.141592653589793238463);
 	float length = (sqrt(SQR(myX) + SQR(myZ)));
-	GLdouble newLookX =  myX = myX / length;
-	GLdouble newLookZ = (myZ / length)*-1;
-	float angle = atan2(newLookZ, newLookX);
-	float rotation_angle = (angle * transfer) + 270;
+	GLdouble myNewX = myX / length;
+	GLdouble myNewZ = (myZ / length) * -1;
+	float angle = atan2(myNewZ, myNewX);
+	float rotation_angle = (angle * CONSTANT) + 270;
 	this->rotationAngle = rotation_angle;
 
 	GLdouble toAddX = 0.0007 * myX;
