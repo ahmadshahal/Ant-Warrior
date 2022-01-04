@@ -10,7 +10,7 @@ Bullet::Bullet(GLdouble x, GLdouble y, GLdouble z, GLdouble lookX, GLdouble look
 	this->lookX = lookX;
 	this->lookY = lookY;
 	this->lookZ = lookZ;
-	this->counter = 1;
+	this->counter = 0;
 }
 
 void Bullet::draw() {

@@ -39,7 +39,7 @@ bool isLClicked = 0, isRClicked = 0;
 
 // ======================================================================================
 int motherBoardBottomTex, motherBoardWall;
-int ramTex, desktopTex, gpuFront, gpuBack, cpuTex, ssdTex;
+int ramTex, desktopTex, gpuFront, gpuBack, cpuTex, ssdTex, ramTex2;
 double fanRotate = 0;
 bool shootingSoundIsPlaying = false;
 time_t shootingSoundStartTime;
@@ -50,7 +50,7 @@ Sound sound2;
 
 GLUquadric *quadric = gluNewQuadric();
 
-bool lighting =true;
+bool lighting = true;
 GLfloat pos [] = {1750, 525, -1750, 1};
 GLfloat ambient [] = {1, 1, 1, 1};
 GLfloat diffues [] = {1, 1, 1, 1};
@@ -116,6 +116,7 @@ int InitGL(GLvoid) // All Setup For OpenGL Goes Here
 	gpuBack = LoadTexture("media/gpu_back.bmp");
 	cpuTex = LoadTexture("media/cpu.bmp");
 	ssdTex = LoadTexture("media/ssd.bmp");
+	ramTex2 = LoadTexture("media/basic.bmp");
 	initialize.InitOpenAL(); // initialize sound from OpenAl
 	shootingSound = Sound("media/shot.wav");
 	sound2 = Sound("media/music.wav");
@@ -166,13 +167,13 @@ void handleKeybordInput()
 	if (keys[VK_LEFT]) {
 		myCamera.RotateY(0.2);
 	}
-	else if (keys[VK_RIGHT]) {
+	if (keys[VK_RIGHT]) {
 		myCamera.RotateY(-0.2);
 	}
-	else if (keys[VK_DOWN]) {
+	if (keys[VK_DOWN]) {
 		myCamera.RotateX(-0.2);
 	}
-	else if (keys[VK_UP]) {
+	if (keys[VK_UP]) {
 		myCamera.RotateX(0.2);
 	}
 	// ==================================
@@ -248,8 +249,8 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 			continue;
 		}
 		if((*it)->x > 2240 && (*it)->x < 2380
-		&& (*it)->z < -3500 && (*it)->z > -3430
-		|| (*it)->y > 140 && (*it)->y < 210
+		&& (*it)->z > -3500 && (*it)->z < -3430
+		&& (*it)->y > 140 && (*it)->y < 210
 		//&& !border[(int) ceil((*it)->x)][(int) ceil((*it)->z)]
 		) {
 			if(lighting){
@@ -306,6 +307,23 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 
 	Enviroment::drawMonitor(desktopTex);
 
+	// Drawing CPU Chips
+	glPushMatrix();
+	double i = -7.8, j = 17.2;
+		while(i+ 0.2 < -2.8){
+			Enviroment::cpuChips(i,j);
+			i += 0.2;
+			j += 0.2;
+		}
+	glPopMatrix();
+
+
+	// Drawing Capacitor
+	glPushMatrix();
+	Enviroment::Capacitor(24,-8);
+	Enviroment::Capacitor(24,-4);
+	glPopMatrix();
+
 	// Drawing SSDs
 	// =======================================
 	glPushMatrix();
@@ -314,14 +332,44 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 		glTranslated(3, .0, .0);
 	}
 	glPopMatrix();
+
+	// Drawing pices RAMs
+	// =======================================
+	 glPushMatrix();
+	
+	for(int i = 0; i < 4; i++) {
+		Enviroment::drawpices();
+		glTranslated(0.8, .0, .0);
+	}
+	glPopMatrix();
+
 	// Drawing RAMs
+	// ======================================= 
+	glPushMatrix();
+	
+	for(int i = 0; i < 4; i++) {
+		Enviroment::drawRAM(ramTex);
+		glTranslated(0.8, .0, .0);
+	}
+	glPopMatrix();
+	
+	// Drawing pices RAMs
 	// =======================================
 	glPushMatrix();
 	for(int i = 0; i < 4; i++) {
-		Enviroment::drawRAM(ramTex);
-		glTranslated(1.5, .0, .0);
+		Enviroment::drawpices();
+		glTranslated(0.8, .0, .0);
 	}
 	glPopMatrix();
+
+	// Drawing drawRamEntrances RAMs
+	// =======================================
+	glPushMatrix();
+	Enviroment::drawRamEntrances(ramTex2);
+	glPopMatrix();
+	//========================================
+
+	
 	// Drawing Fan
 	// =======================================
 	glPushMatrix();

@@ -15,5 +15,13 @@ public:
 	static void drawRamGlass();
 	static void drawCpuGlass();
 	static void drawFanGlass();
-	static void Enviroment::drawSleepbutton(int sleepTex);
+	static void drawSleepbutton(int sleepTex);
+	static void cpuChips(double z , double y);
+	static void Capacitor(double x , double z);
+	static void drawpices();
+	static void drawRamEntrances(int photo);
+	static void Room(int room);
+	static void drawGPUComponents(int gpuComponent, int gpucomponent2);
+	static void drawGPUWires(int wire);
+	static void gpuFloor(int floor);
 };
