@@ -189,9 +189,9 @@ void handleKeybordInput()
 	if (keys['M'])
 		sound2.Play();
 	if(keys[VK_SPACE] && canFire) {
-		// shootingSound.Play();
-		// shootingSoundIsPlaying = true;
-		// shootingSoundStartTime = time(0);
+		shootingSound.Play();
+		shootingSoundIsPlaying = true;
+		shootingSoundStartTime = time(0);
 		canFire = false;
 		bullets.insert(new Bullet(myCamera.Position.x,
 			myCamera.Position.y,
