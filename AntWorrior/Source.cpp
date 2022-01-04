@@ -137,7 +137,11 @@ int InitGL(GLvoid) // All Setup For OpenGL Goes Here
 				&& border[x * SCALE + 10][z * SCALE + 10] != 0 && border[x * SCALE + 10][z * SCALE + 10] != 2
 				&& border[x * SCALE - 10][z * SCALE - 10] != 0 && border[x * SCALE - 10][z * SCALE - 10] != 2
 				&& border[x * SCALE + 10][z * SCALE - 10] != 0 && border[x * SCALE + 10][z * SCALE - 10] != 2
-				&& border[x * SCALE - 10][z * SCALE + 10] != 0 && border[x * SCALE - 10][z * SCALE + 10] != 2) {
+				&& border[x * SCALE - 10][z * SCALE + 10] != 0 && border[x * SCALE - 10][z * SCALE + 10] != 2
+				&& (z * SCALE > myCamera.Position.z + 1 * SCALE * -1
+				|| z * SCALE < myCamera.Position.z - 1 * SCALE * -1
+				|| x * SCALE > myCamera.Position.x + 1 * SCALE
+				|| x * SCALE < myCamera.Position.x - 1 * SCALE)) {
 				ants.insert(new Ant(x * SCALE, 0.12 * SCALE, z * SCALE * -1));
 				break;
 			}

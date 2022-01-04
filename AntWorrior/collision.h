@@ -113,7 +113,7 @@ static void handleBorder(){
 
 	// ========================================
 	// RAM
-	for(int i = 2640; i < 3310; i ++){
+	for(int i = 2640; i < 3110; i ++){
 		for(int j = 1630 ; j < 3130; j++){
 			border[i][j] = 0 ;
 		}	
