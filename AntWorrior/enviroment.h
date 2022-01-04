@@ -10,7 +10,7 @@ public:
 	static void drawRAM(int ramTex);
 	static void drawMonitor(int desktopTex);
 	static void drawPin();
-	static void drawFan();
+	static void drawFan(int fanTex);
 	static void drawStorageGlass();
 	static void drawRamGlass();
 	static void drawCpuGlass();

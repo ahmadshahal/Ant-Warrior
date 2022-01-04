@@ -5,7 +5,7 @@
 #include <gl/glu.h>  // Header File For The GLu32 Library
 // #include <glaux.h>		// Header File For The Glaux Library
 #include <math.h>
-#include <vector>
+#include <set>
 #include <texture.h>
 #include <time.h>
 #include <random>
@@ -21,8 +21,8 @@ using namespace std;
 // ======================================================================================
 // =================================OUR VARIABLES========================================
 
-vector<Ant*> ants;
-vector<Bullet*> bullets;
+set<Ant*> ants;
+set<Bullet*> bullets;
 int initialNumOfAnts = 15;
 
 Person* person;
@@ -39,7 +39,7 @@ bool isLClicked = 0, isRClicked = 0;
 
 // ======================================================================================
 int motherBoardBottomTex, motherBoardWall;
-int ramTex, desktopTex, gpuFront, gpuBack, cpuTex, ssdTex, ramTex2;
+int ramTex, gpuFront, gpuBack, cpuTex, ssdTex, ramTex2, fanTex;
 double fanRotate = 0;
 bool shootingSoundIsPlaying = false;
 time_t shootingSoundStartTime;
@@ -111,12 +111,12 @@ int InitGL(GLvoid) // All Setup For OpenGL Goes Here
 	motherBoardWall = LoadTexture("media/mother_board_wall.bmp");
 	motherBoardBottomTex = LoadTexture("media/mother_board_bottom.bmp");
 	ramTex = LoadTexture("media/ram.bmp");
-	desktopTex = LoadTexture("media/windows-7.bmp");
 	gpuFront = LoadTexture("media/gpu_front.bmp");
 	gpuBack = LoadTexture("media/gpu_back.bmp");
 	cpuTex = LoadTexture("media/cpu.bmp");
 	ssdTex = LoadTexture("media/ssd.bmp");
 	ramTex2 = LoadTexture("media/basic.bmp");
+	fanTex = LoadTexture("media/fan_tex.bmp");
 	initialize.InitOpenAL(); // initialize sound from OpenAl
 	shootingSound = Sound("media/shot.wav");
 	sound2 = Sound("media/music.wav");
@@ -130,15 +130,15 @@ int InitGL(GLvoid) // All Setup For OpenGL Goes Here
 			int x = 2 + (double)(rand()) / ((double)(RAND_MAX / (24 - (2))));
 			int z = abs(-24 + (double)(rand()) / ((double)(RAND_MAX / (-2 - (-24)))));
 			if(border[x * SCALE][z * SCALE] != 0 && border[x * SCALE][z * SCALE] != 2
-				&& border[x * SCALE + 1][z * SCALE] != 0 && border[x * SCALE + 1][z * SCALE] != 2
-				&& border[x * SCALE - 1][z * SCALE] != 0 && border[x * SCALE - 1][z * SCALE] != 2
-				&& border[x * SCALE][z * SCALE + 1] != 0 && border[x * SCALE][z * SCALE + 1] != 2
-				&& border[x * SCALE][z * SCALE - 1] != 0 && border[x * SCALE][z * SCALE - 1] != 2
-				&& border[x * SCALE + 1][z * SCALE + 1] != 0 && border[x * SCALE + 1][z * SCALE + 1] != 2
-				&& border[x * SCALE - 1][z * SCALE - 1] != 0 && border[x * SCALE - 1][z * SCALE - 1] != 2
-				&& border[x * SCALE + 1][z * SCALE - 1] != 0 && border[x * SCALE + 1][z * SCALE - 1] != 2
-				&& border[x * SCALE - 1][z * SCALE + 1] != 0 && border[x * SCALE - 1][z * SCALE + 1] != 2) {
-				ants.push_back(new Ant(x * SCALE, 0.12 * SCALE, z * SCALE * -1));
+				&& border[x * SCALE + 10][z * SCALE] != 0 && border[x * SCALE + 10][z * SCALE] != 2
+				&& border[x * SCALE - 10][z * SCALE] != 0 && border[x * SCALE - 10][z * SCALE] != 2
+				&& border[x * SCALE][z * SCALE + 10] != 0 && border[x * SCALE][z * SCALE + 10] != 2
+				&& border[x * SCALE][z * SCALE - 10] != 0 && border[x * SCALE][z * SCALE - 10] != 2
+				&& border[x * SCALE + 10][z * SCALE + 10] != 0 && border[x * SCALE + 10][z * SCALE + 10] != 2
+				&& border[x * SCALE - 10][z * SCALE - 10] != 0 && border[x * SCALE - 10][z * SCALE - 10] != 2
+				&& border[x * SCALE + 10][z * SCALE - 10] != 0 && border[x * SCALE + 10][z * SCALE - 10] != 2
+				&& border[x * SCALE - 10][z * SCALE + 10] != 0 && border[x * SCALE - 10][z * SCALE + 10] != 2) {
+				ants.insert(new Ant(x * SCALE, 0.12 * SCALE, z * SCALE * -1));
 				break;
 			}
 		}
@@ -152,29 +152,20 @@ int InitGL(GLvoid) // All Setup For OpenGL Goes Here
 	return TRUE; // Initialization Went OK
 }
 
-void handleMouseInput(int mouseX, int mouseY, bool isLClicked, bool isRClicked)
-{
-	if(isLClicked) {
-		shootingSound.Play();
-		shootingSoundIsPlaying = true;
-		shootingSoundStartTime = time(0);
-	}
-}
-
 void handleKeybordInput()
 {
 	// ==================================
 	if (keys[VK_LEFT]) {
-		myCamera.RotateY(0.2);
+		myCamera.RotateY(0.3);
 	}
 	if (keys[VK_RIGHT]) {
-		myCamera.RotateY(-0.2);
+		myCamera.RotateY(-0.3);
 	}
 	if (keys[VK_DOWN]) {
-		myCamera.RotateX(-0.2);
+		myCamera.RotateX(-0.3);
 	}
 	if (keys[VK_UP]) {
-		myCamera.RotateX(0.2);
+		myCamera.RotateX(0.3);
 	}
 	// ==================================
 	if (keys['Q'])
@@ -198,7 +189,7 @@ void handleKeybordInput()
 		// shootingSoundIsPlaying = true;
 		// shootingSoundStartTime = time(0);
 		canFire = false;
-		bullets.push_back(new Bullet(myCamera.Position.x,
+		bullets.insert(new Bullet(myCamera.Position.x,
 			myCamera.Position.y,
 			myCamera.Position.z,
 			myCamera.View.x,
@@ -217,8 +208,6 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 
 	handleKeybordInput();
 
-	handleMouseInput(mouseX, mouseY, isLClicked, isRClicked);
-
 	person->drawX();
 	person->draw();
 
@@ -231,10 +220,19 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 		shootingSound.Stop();
 	}
 
-	vector<vector<Bullet*>::iterator> toDeleteBullets; 
-	vector<vector<Ant*>::iterator> toDeleteAnts; 
+	for(auto it : ants) {
+		if((it)->z <= myCamera.Position.z + 0.5 * SCALE
+			&& (it)->z >= myCamera.Position.z - 0.5 * SCALE
+			&& (it)->x <= myCamera.Position.x + 0.5 * SCALE
+			&& (it)->x >= myCamera.Position.x - 0.5 * SCALE) {
+			exit(0);
+		}
+	}
 
-	for(vector<Bullet*>::iterator it = bullets.begin(); it != bullets.end(); it++) {
+	vector<set<Bullet*>::iterator> toDeleteBullets; 
+	vector<set<Ant*>::iterator> toDeleteAnts; 
+
+	for(set<Bullet*>::iterator it = bullets.begin(); it != bullets.end(); it++) {
 		(*it)->move();
 		(*it)->draw();
 		if((*it)->x > 25 * SCALE || (*it)->x < 1 * SCALE
@@ -265,7 +263,7 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 			toDeleteBullets.push_back(it);
 			continue;
 		}
-		for(vector<Ant*>::iterator it2 = ants.begin(); it2 != ants.end(); it2++) {
+		for(set<Ant*>::iterator it2 = ants.begin(); it2 != ants.end(); it2++) {
 			if((*it)->y <= (*it2)->y + 0.3 * SCALE
 				&& (*it)->y >= (*it2)->y - 0.3 * SCALE
 				&& (*it)->z <= (*it2)->z + 0.3 * SCALE
@@ -289,9 +287,9 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 		ants.erase(it);
 	}
 
-	for(int i = 0; i < ants.size(); i++) {
-		ants[i]->draw();
-		ants[i]->move();
+	for(set<Ant*>::iterator it = ants.begin(); it != ants.end(); it++) {
+		(*it)->draw();
+		(*it)->move(myCamera.Position.x, myCamera.Position.z);
 	}
 
 	// Making the world larger :)
@@ -304,8 +302,6 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 	Enviroment::drawCPU(cpuTex);
 
 	Enviroment::drawGPU(gpuFront, gpuBack);
-
-	Enviroment::drawMonitor(desktopTex);
 
 	// Drawing CPU Chips
 	glPushMatrix();
@@ -377,7 +373,7 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 	glTranslated(5, 0, -5);
 	glRotated(fanRotate, 0, 1, 0);
 
-	Enviroment::drawFan();
+	Enviroment::drawFan(fanTex);
 	fanRotate += 0.1;
 
 	glPopMatrix();

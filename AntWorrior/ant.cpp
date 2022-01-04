@@ -12,7 +12,7 @@ Ant::Ant(GLdouble x, GLdouble y, GLdouble z) {
 	this->moveRight = 1;
 	this->rotationAngle = 0 + (double)(rand()) / ((double)(RAND_MAX / (360 - (0))));
 	this->antModel = Model_3DS();
-	this->antTex.LoadBMP("media/ant.bmp");
+	this->antTex.LoadBMP("media/black.bmp");
 	this->antModel.Load("media/ant.3ds");
 	this->antModel.Materials[0].tex = this->antTex;
 	this->antModel.scale = 0.01 * 140;
@@ -29,7 +29,20 @@ void Ant::draw() {
 	glPopMatrix();
 }
 
-void Ant::move() {
+void Ant::move(GLdouble myX, GLdouble myZ) {
+
+	myX -= this->x;
+	myZ -= this->z;
+	GLdouble toAddX = 0.0007 * myX;
+	GLdouble toAddZ = 0.0007 * myZ;
+	GLdouble newX = this->x + toAddX;
+	GLdouble newZ = this->z + toAddZ;
+	if(border[(int) floor(newX)][abs((int) floor(newZ))]) {
+		this->x = newX;
+		this->z = newZ;
+	}
+
+	/*
 	int random = rand() % 2;
 	if(random == 0) {
 		if(moveForward) {
@@ -67,4 +80,5 @@ void Ant::move() {
 			}
 		}
 	}
+	*/
 }

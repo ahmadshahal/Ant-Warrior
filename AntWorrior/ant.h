@@ -19,5 +19,5 @@ public:
 	Model_3DS antModel;
 	Ant(GLdouble x, GLdouble y, GLdouble z);
 	void draw();
-	void move();
+	void move(GLdouble myX, GLdouble myZ);
 };

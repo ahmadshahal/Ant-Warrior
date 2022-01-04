@@ -142,6 +142,19 @@ void Enviroment::drawMotherBoard(int bottomTex, int wallTex)
 	glVertex3d(1, 0, -25);
 	glEnd();
 
+	// Top
+	glBindTexture(GL_TEXTURE_2D, wallTex);
+	glBegin(GL_QUADS);
+	glTexCoord2d(0, 0);
+	glVertex3d(1, 3.75, -1);
+	glTexCoord2d(1, 0);
+	glVertex3d(25, 3.75, -1);
+	glTexCoord2d(1, 1);
+	glVertex3d(25, 3.75, -25);
+	glTexCoord2d(0, 1);
+	glVertex3d(1, 3.75, -25);
+	glEnd();
+
 	glDisable(GL_TEXTURE_2D);
 }
 
@@ -342,25 +355,6 @@ void Enviroment::drawRAM(int ramTex)
 
 }
 
-void Enviroment::drawMonitor(int desktopTex)
-{
-	glEnable(GL_TEXTURE_2D);
-
-	glBindTexture(GL_TEXTURE_2D, desktopTex);
-	glBegin(GL_QUADS);
-	glTexCoord2d(0, 0);
-	glVertex3d(26, 4.375, -25);
-	glTexCoord2d(1, 0);
-	glVertex3d(26, 4.375, -1);
-	glTexCoord2d(1, 1);
-	glVertex3d(26, 13.75, -1);
-	glTexCoord2d(0, 1);
-	glVertex3d(26, 13.75, -25);
-	glEnd();
-
-	glDisable(GL_TEXTURE_2D);
-}
-
 void Enviroment::drawPin()
 {
 	glColor3d(0.8, 0.8, 0.8);
@@ -408,13 +402,17 @@ void Enviroment::drawPin()
 	glColor3d(1, 1, 1);
 }
 
-void Enviroment::drawFan()
+void Enviroment::drawFan(int fanTex)
 {
 
 	// Drawn at (0, 0, 0) because the center has been
 	// translated to its position.
 
 	glColor3ub(130, 130, 130);
+	// glColor3d(1, 1, 1);
+
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, fanTex);
 
 	for(GLdouble angle = 0; angle < 360; angle += 45) {
 		glPushMatrix();
@@ -422,14 +420,20 @@ void Enviroment::drawFan()
 
 
 		glBegin(GL_QUADS);
+		glTexCoord2d(0, 0);
 		glVertex3d(0, 0, 0);
+		glTexCoord2d(1, 0);
 		glVertex3d(0, 0, 2);
+		glTexCoord2d(1, 1);
 		glVertex3d(0, 1.2, 3);
+		glTexCoord2d(0, 1);
 		glVertex3d(0, 1.2, 0);
 		glEnd();
 
 		glPopMatrix();
 	}
+
+	glDisable(GL_TEXTURE_2D);
 
 	glColor3d(1, 1, 1);
 }
@@ -1681,7 +1685,7 @@ void Enviroment::drawRamEntrances(int photo){
   
 
 	///back clom ///
-glEnable(GL_TEXTURE_2D);
+	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D,photo);
 	
 	// Front
@@ -1948,7 +1952,6 @@ glEnable(GL_TEXTURE_2D);
 	 glDisable(GL_TEXTURE_2D);
  }
 
-
 void Enviroment::drawGPUComponents(int gpuComponent, int gpucomponent2)
 {
   GLUquadric *quadric = gluNewQuadric();
@@ -2159,7 +2162,7 @@ void Enviroment::drawGPUWires(int wire)
   glDisable(GL_TEXTURE_2D);
 }
 
-void Enviroment:: gpuFloor(int floor)
+void Enviroment::gpuFloor(int floor)
 {
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, floor);
