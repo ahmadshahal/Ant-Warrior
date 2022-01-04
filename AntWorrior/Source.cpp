@@ -39,7 +39,7 @@ bool isLClicked = 0, isRClicked = 0;
 
 // ======================================================================================
 int motherBoardBottomTex, motherBoardWall;
-int ramTex, gpuFront, gpuBack, cpuTex, ssdTex, ramTex2, fanTex;
+int ramTex, gpuFront, gpuBack, cpuTex, ssdTex, ramTex2, fanTex, buttonTex;
 double fanRotate = 0;
 bool shootingSoundIsPlaying = false;
 time_t shootingSoundStartTime;
@@ -50,15 +50,12 @@ Sound sound2;
 
 GLUquadric *quadric = gluNewQuadric();
 
-bool lighting = true;
+bool enableLight = true;
 GLfloat pos [] = {1750, 525, -1750, 1};
 GLfloat ambient [] = {1, 1, 1, 1};
 GLfloat diffues [] = {1, 1, 1, 1};
 GLfloat specular [] = {0, 0, 0, 1};
 GLfloat shin [] = {90};
-// ======================================================================================
-
-// ======================================================================================
 
 HDC hDC = NULL;      // Private GDI Device Context
 HGLRC hRC = NULL;    // Permanent Rendering Cntext
@@ -86,6 +83,31 @@ GLvoid ReSizeGLScene(GLsizei width, GLsizei height) // Resize And Initialize The
 
 	glMatrixMode(GL_MODELVIEW); // Select The Modelview Matrix
 	glLoadIdentity();           // Reset The Modelview Matrix
+}
+
+void initAnts() {
+	for(int i = 0; i < initialNumOfAnts; i++) {
+		while(true) {
+			int x = 2 + (double)(rand()) / ((double)(RAND_MAX / (24 - (2))));
+			int z = abs(-24 + (double)(rand()) / ((double)(RAND_MAX / (-2 - (-24)))));
+			if(border[x * SCALE][z * SCALE] != 0 && border[x * SCALE][z * SCALE] != 2
+				&& border[x * SCALE + 10][z * SCALE] != 0 && border[x * SCALE + 10][z * SCALE] != 2
+				&& border[x * SCALE - 10][z * SCALE] != 0 && border[x * SCALE - 10][z * SCALE] != 2
+				&& border[x * SCALE][z * SCALE + 10] != 0 && border[x * SCALE][z * SCALE + 10] != 2
+				&& border[x * SCALE][z * SCALE - 10] != 0 && border[x * SCALE][z * SCALE - 10] != 2
+				&& border[x * SCALE + 10][z * SCALE + 10] != 0 && border[x * SCALE + 10][z * SCALE + 10] != 2
+				&& border[x * SCALE - 10][z * SCALE - 10] != 0 && border[x * SCALE - 10][z * SCALE - 10] != 2
+				&& border[x * SCALE + 10][z * SCALE - 10] != 0 && border[x * SCALE + 10][z * SCALE - 10] != 2
+				&& border[x * SCALE - 10][z * SCALE + 10] != 0 && border[x * SCALE - 10][z * SCALE + 10] != 2
+				&& (z * SCALE > myCamera.Position.z + 1 * SCALE * -1
+				|| z * SCALE < myCamera.Position.z - 1 * SCALE * -1
+				|| x * SCALE > myCamera.Position.x + 1 * SCALE
+				|| x * SCALE < myCamera.Position.x - 1 * SCALE)) {
+				ants.insert(new Ant(x * SCALE, 0.12 * SCALE, z * SCALE * -1));
+				break;
+			}
+		}
+	}
 }
 
 int InitGL(GLvoid) // All Setup For OpenGL Goes Here
@@ -117,42 +139,22 @@ int InitGL(GLvoid) // All Setup For OpenGL Goes Here
 	ssdTex = LoadTexture("media/ssd.bmp");
 	ramTex2 = LoadTexture("media/basic.bmp");
 	fanTex = LoadTexture("media/fan_tex.bmp");
+	buttonTex = LoadTexture("media/button.bmp");
 	initialize.InitOpenAL(); // initialize sound from OpenAl
 	shootingSound = Sound("media/shot.wav");
 	sound2 = Sound("media/music.wav");
-
+	
 	handleBorder();
-
 	person = new Person();
-
-	for(int i = 0; i < initialNumOfAnts; i++) {
-		while(true) {
-			int x = 2 + (double)(rand()) / ((double)(RAND_MAX / (24 - (2))));
-			int z = abs(-24 + (double)(rand()) / ((double)(RAND_MAX / (-2 - (-24)))));
-			if(border[x * SCALE][z * SCALE] != 0 && border[x * SCALE][z * SCALE] != 2
-				&& border[x * SCALE + 10][z * SCALE] != 0 && border[x * SCALE + 10][z * SCALE] != 2
-				&& border[x * SCALE - 10][z * SCALE] != 0 && border[x * SCALE - 10][z * SCALE] != 2
-				&& border[x * SCALE][z * SCALE + 10] != 0 && border[x * SCALE][z * SCALE + 10] != 2
-				&& border[x * SCALE][z * SCALE - 10] != 0 && border[x * SCALE][z * SCALE - 10] != 2
-				&& border[x * SCALE + 10][z * SCALE + 10] != 0 && border[x * SCALE + 10][z * SCALE + 10] != 2
-				&& border[x * SCALE - 10][z * SCALE - 10] != 0 && border[x * SCALE - 10][z * SCALE - 10] != 2
-				&& border[x * SCALE + 10][z * SCALE - 10] != 0 && border[x * SCALE + 10][z * SCALE - 10] != 2
-				&& border[x * SCALE - 10][z * SCALE + 10] != 0 && border[x * SCALE - 10][z * SCALE + 10] != 2
-				&& (z * SCALE > myCamera.Position.z + 1 * SCALE * -1
-				|| z * SCALE < myCamera.Position.z - 1 * SCALE * -1
-				|| x * SCALE > myCamera.Position.x + 1 * SCALE
-				|| x * SCALE < myCamera.Position.x - 1 * SCALE)) {
-				ants.insert(new Ant(x * SCALE, 0.12 * SCALE, z * SCALE * -1));
-				break;
-			}
-		}
-	}
+	initAnts();
+	
 	glEnable(GL_LIGHT0);
 	glLightfv(GL_LIGHT0, GL_POSITION, pos);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffues);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
 	glLightfv(GL_LIGHT0, GL_SHININESS, shin);
+
 	return TRUE; // Initialization Went OK
 }
 
@@ -171,12 +173,6 @@ void handleKeybordInput()
 	if (keys[VK_UP]) {
 		myCamera.RotateX(0.3);
 	}
-	// ==================================
-	if (keys['Q'])
-		myCamera.MoveUpward(0.03);
-	if (keys['E'])
-		myCamera.MoveUpward(-0.03);
-	// ==================================
 	if (keys['W'])
         myCamera.MoveForward(1);
     if (keys['S'])
@@ -185,7 +181,6 @@ void handleKeybordInput()
         myCamera.MoveRight(-1);
     if (keys['D'])
         myCamera.MoveRight(1);
-	// ==================================
 	if (keys['M'])
 		sound2.Play();
 	if(keys[VK_SPACE] && canFire) {
@@ -193,113 +188,16 @@ void handleKeybordInput()
 		shootingSoundIsPlaying = true;
 		shootingSoundStartTime = time(0);
 		canFire = false;
-		bullets.insert(new Bullet(myCamera.Position.x,
-			myCamera.Position.y,
-			myCamera.Position.z,
-			myCamera.View.x,
-			myCamera.View.y,
-			myCamera.View.z));
+		// Shooting.
+		bullets.insert(new Bullet(myCamera.Position.x, myCamera.Position.y, myCamera.Position.z, myCamera.View.x, myCamera.View.y, myCamera.View.z));
 	}
 	if(!keys[VK_SPACE]){
 		canFire = true;
 	}
 }
 
-int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
-{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glLoadIdentity();
-
-	handleKeybordInput();
-
-	person->drawX();
-	person->draw();
-
-	myCamera.Render();
-
-
-	// Stopping the shooting sound after 2 seconds.
-	if(shootingSoundIsPlaying && time(0) - shootingSoundStartTime == 2) {
-		shootingSoundIsPlaying = false;
-		shootingSound.Stop();
-	}
-
-	for(auto it : ants) {
-		if((it)->z <= myCamera.Position.z + 0.5 * SCALE
-			&& (it)->z >= myCamera.Position.z - 0.5 * SCALE
-			&& (it)->x <= myCamera.Position.x + 0.5 * SCALE
-			&& (it)->x >= myCamera.Position.x - 0.5 * SCALE) {
-			exit(0);
-		}
-	}
-
-	vector<set<Bullet*>::iterator> toDeleteBullets; 
-	vector<set<Ant*>::iterator> toDeleteAnts; 
-
-	for(set<Bullet*>::iterator it = bullets.begin(); it != bullets.end(); it++) {
-		(*it)->move();
-		(*it)->draw();
-		if((*it)->x > 25 * SCALE || (*it)->x < 1 * SCALE
-			|| (*it)->z < -25 * SCALE || (*it)->z > -1 * SCALE
-			|| (*it)->y > 25 * SCALE || (*it)->y < 0
-			|| !border[(int) ceil((*it)->x)][abs((int) ceil((*it)->z))]
-			) {
-			cout << "========================" << endl;
-			cout << "GONE" << endl;
-			cout << "========================" << endl;
-			toDeleteBullets.push_back(it);
-			continue;
-		}
-		if((*it)->x > 2240 && (*it)->x < 2380
-		&& (*it)->z > -3500 && (*it)->z < -3430
-		&& (*it)->y > 140 && (*it)->y < 210
-		//&& !border[(int) ceil((*it)->x)][(int) ceil((*it)->z)]
-		) {
-			if(lighting){
-				glEnable(GL_LIGHTING);
-				glEnable(GL_LIGHT0);
-				lighting = !lighting;
-			}
-			else{
-				glDisable(GL_LIGHTING);
-				lighting = !lighting;
-			}
-			toDeleteBullets.push_back(it);
-			continue;
-		}
-		for(set<Ant*>::iterator it2 = ants.begin(); it2 != ants.end(); it2++) {
-			if((*it)->y <= (*it2)->y + 0.3 * SCALE
-				&& (*it)->y >= (*it2)->y - 0.3 * SCALE
-				&& (*it)->z <= (*it2)->z + 0.3 * SCALE
-				&& (*it)->z >= (*it2)->z - 0.3 * SCALE
-				&& (*it)->x <= (*it2)->x + 0.3 * SCALE
-				&& (*it)->x >= (*it2)->x - 0.3 * SCALE) {
-				cout << "============================" << endl;
-				cout << "KILLED" << endl;
-				cout << "============================" << endl;
-				toDeleteAnts.push_back(it2);
-				toDeleteBullets.push_back(it);
-				break;
-			}
-		}
-	}
-	for(auto it : toDeleteBullets) {
-		bullets.erase(it);
-	}
-
-	for(auto it : toDeleteAnts) {
-		ants.erase(it);
-	}
-
-	for(set<Ant*>::iterator it = ants.begin(); it != ants.end(); it++) {
-		(*it)->draw();
-		(*it)->move(myCamera.Position.x, myCamera.Position.z);
-	}
-
-	// Making the world larger :)
-	glScaled(SCALE, SCALE, SCALE);
-
-	Enviroment::drawSleepbutton(ssdTex);
+void myDrawings() {
+	Enviroment::drawSleepbutton(buttonTex);
 
 	Enviroment::drawMotherBoard(motherBoardBottomTex, motherBoardWall);
 
@@ -307,18 +205,15 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 
 	Enviroment::drawGPU(gpuFront, gpuBack);
 
-	// Drawing CPU Chips
 	glPushMatrix();
 	double i = -7.8, j = 17.2;
-		while(i+ 0.2 < -2.8){
+		while(i + 0.2 < -2.8) {
 			Enviroment::cpuChips(i,j);
 			i += 0.2;
 			j += 0.2;
 		}
 	glPopMatrix();
 
-
-	// Drawing Capacitor
 	glPushMatrix();
 	Enviroment::Capacitor(24,-8);
 	Enviroment::Capacitor(24,-4);
@@ -413,7 +308,99 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 	glTranslated(1.5, .0, .0);
 	Enviroment::drawFanGlass();
 	glPopMatrix();
+}
 
+int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity();
+
+	handleKeybordInput();
+
+	person->drawX();
+	person->draw();
+
+	myCamera.Render();
+
+	if(ants.size() == 0) {
+		initAnts();
+	}
+
+	if(shootingSoundIsPlaying && time(0) - shootingSoundStartTime == 2) {
+		shootingSoundIsPlaying = false;
+		shootingSound.Stop();
+	}
+
+	// An ant killed me.
+	for(auto it : ants) {
+		if((it)->z <= myCamera.Position.z + 0.5 * SCALE
+			&& (it)->z >= myCamera.Position.z - 0.5 * SCALE
+			&& (it)->x <= myCamera.Position.x + 0.5 * SCALE
+			&& (it)->x >= myCamera.Position.x - 0.5 * SCALE) {
+			exit(0);
+		}
+	}
+
+	vector<set<Bullet*>::iterator> toDeleteBullets; 
+	vector<set<Ant*>::iterator> toDeleteAnts; 
+
+	for(set<Bullet*>::iterator it = bullets.begin(); it != bullets.end(); it++) {
+		(*it)->move();
+		(*it)->draw();
+		if((*it)->x > 25 * SCALE || (*it)->x < 1 * SCALE
+			|| (*it)->z < -25 * SCALE || (*it)->z > -1 * SCALE
+			|| (*it)->y > 25 * SCALE || (*it)->y < 0
+			|| !border[(int) ceil((*it)->x)][abs((int) ceil((*it)->z))]
+			) {
+			toDeleteBullets.push_back(it);
+			continue;
+		}
+		if((*it)->x > 2240 && (*it)->x < 2380
+		&& (*it)->z > -3500 && (*it)->z < -3430
+		&& (*it)->y > 140 && (*it)->y < 210
+		) {
+			if(enableLight){
+				glEnable(GL_LIGHTING);
+				glEnable(GL_LIGHT0);
+				enableLight = !enableLight;
+			}
+			else{
+				glDisable(GL_LIGHTING);
+				enableLight = !enableLight;
+			}
+			toDeleteBullets.push_back(it);
+			continue;
+		}
+		for(set<Ant*>::iterator it2 = ants.begin(); it2 != ants.end(); it2++) {
+			if((*it)->y <= (*it2)->y + 0.3 * SCALE
+				&& (*it)->y >= (*it2)->y - 0.3 * SCALE
+				&& (*it)->z <= (*it2)->z + 0.3 * SCALE
+				&& (*it)->z >= (*it2)->z - 0.3 * SCALE
+				&& (*it)->x <= (*it2)->x + 0.3 * SCALE
+				&& (*it)->x >= (*it2)->x - 0.3 * SCALE) {
+				toDeleteAnts.push_back(it2);
+				toDeleteBullets.push_back(it);
+				break;
+			}
+		}
+	}
+	for(auto it : toDeleteBullets) {
+		bullets.erase(it);
+	}
+
+	for(auto it : toDeleteAnts) {
+		ants.erase(it);
+	}
+
+	for(set<Ant*>::iterator it = ants.begin(); it != ants.end(); it++) {
+		(*it)->draw();
+		(*it)->move(myCamera.Position.x, myCamera.Position.z);
+	}
+
+	glScaled(SCALE, SCALE, SCALE);
+
+	myDrawings();
+	
 	return TRUE;
 }
 

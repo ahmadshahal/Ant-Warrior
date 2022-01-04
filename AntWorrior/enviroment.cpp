@@ -158,6 +158,54 @@ void Enviroment::drawMotherBoard(int bottomTex, int wallTex)
 	glDisable(GL_TEXTURE_2D);
 }
 
+void Enviroment::drawSleepbutton(int sleepTex)
+{
+	glEnable(GL_TEXTURE_2D);
+
+	// Front
+	glBindTexture(GL_TEXTURE_2D, sleepTex);
+	glBegin(GL_QUADS);
+	glTexCoord2d(0, 0);
+	glVertex3d(16, 1, -24.5);
+	glTexCoord2d(1, 0);
+	glVertex3d(17, 1, -24.5);
+	glTexCoord2d(1, 1);
+	glVertex3d(17, 1.5, -24.5);
+	glTexCoord2d(0, 1);
+	glVertex3d(16, 1.5, -24.5);
+	glEnd();
+
+	glDisable(GL_TEXTURE_2D);
+
+	glColor3d(1, 1, 1);
+
+	// Top
+	glBegin(GL_QUADS);
+	glVertex3d(16, 1, -24.5);
+	glVertex3d(17, 1, -24.5);
+	glVertex3d(17, 1, -25);
+	glVertex3d(16, 1, -25);
+	glEnd();
+
+	// Left
+	glBegin(GL_QUADS);
+	glVertex3d(16, 1, -24.5);
+	glVertex3d(16, 1, -25);
+	glVertex3d(16, 1.5, -25);
+	glVertex3d(16, 1.5, -24.5);
+	glEnd();
+
+	// Right
+	glBegin(GL_QUADS);
+	glVertex3d(17, 1, -24.5);
+	glVertex3d(17, 1, -25);
+	glVertex3d(17, 1.5, -25);
+	glVertex3d(17, 1.5, -24.5);
+	glEnd();
+
+	glColor3d(1, 1, 1);
+}
+
 void Enviroment::drawCPU(int cpuTex)
 {
 	glColor3ub(150, 150, 150);
@@ -271,18 +319,6 @@ void Enviroment::drawSSD(int ssdTex)
 	glEnd();
 
 	glDisable(GL_TEXTURE_2D);
-
-	//glColor3d(0, 0, 0);
-
-	// Top
-	//glBegin(GL_QUADS);
-	//glVertex3d(3, 1.25, -17);
-	//glVertex3d(4, 1.25, -17);
-	//glVertex3d(4, 1.25, -23);
-	//glVertex3d(3, 1.25, -23);
-	//glEnd();
-
-	//glColor3d(1, 1, 1);
 }
 
 void Enviroment::drawRAM(int ramTex)
@@ -339,18 +375,8 @@ void Enviroment::drawRAM(int ramTex)
 	glVertex3d(19.2, 1.28, -22);
 	glEnd();
 
-	
-	
 	glDisable(GL_TEXTURE_2D);
 
-	// Top
-	//glBegin(GL_QUADS);
-	//glColor3d(0,0,0);
-	//glVertex3d(19.2, 1.28, -12);
-	//glVertex3d(19.5, 1.28, -12);
-	//glVertex3d(19.5, 1.28, -22);
-	//glVertex3d(19.2, 1.28, -22);
-	//glEnd();
 	glColor3d(1,1,1);
 
 }
@@ -404,12 +430,7 @@ void Enviroment::drawPin()
 
 void Enviroment::drawFan(int fanTex)
 {
-
-	// Drawn at (0, 0, 0) because the center has been
-	// translated to its position.
-
 	glColor3ub(130, 130, 130);
-	// glColor3d(1, 1, 1);
 
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, fanTex);
@@ -596,54 +617,6 @@ void Enviroment::drawFanGlass()
 	glDisable(GL_BLEND);
 }
 
-void Enviroment::drawSleepbutton(int sleepTex)
-{
-	glEnable(GL_TEXTURE_2D);
-
-	// Front
-	glBindTexture(GL_TEXTURE_2D, sleepTex);
-	glBegin(GL_QUADS);
-	glTexCoord2d(0, 0);
-	glVertex3d(16, 1, -24.5);
-	glTexCoord2d(1, 0);
-	glVertex3d(17, 1, -24.5);
-	glTexCoord2d(1, 1);
-	glVertex3d(17, 1.5, -24.5);
-	glTexCoord2d(0, 1);
-	glVertex3d(16, 1.5, -24.5);
-	glEnd();
-
-	glDisable(GL_TEXTURE_2D);
-
-	glColor3d(0, 0, 0);
-
-	// Top
-	glBegin(GL_QUADS);
-	glVertex3d(16, 1, -24.5);
-	glVertex3d(17, 1, -24.5);
-	glVertex3d(17, 1, -25);
-	glVertex3d(16, 1, -25);
-	glEnd();
-
-	// Left
-	glBegin(GL_QUADS);
-	glVertex3d(16, 1, -24.5);
-	glVertex3d(16, 1, -25);
-	glVertex3d(16, 1.5, -25);
-	glVertex3d(16, 1.5, -24.5);
-	glEnd();
-
-	// Right
-	glBegin(GL_QUADS);
-	glVertex3d(17, 1, -24.5);
-	glVertex3d(17, 1, -25);
-	glVertex3d(17, 1.5, -25);
-	glVertex3d(17, 1.5, -24.5);
-	glEnd();
-
-	glColor3d(1, 1, 1);
-}
-
 void circle(double r, int lats, int longs , int p) {
   float M_PI = 3.14/p;
   int i, j;
@@ -717,32 +690,21 @@ void Enviroment::Capacitor(double x, double z){
 		glVertex3f(0, 0, 0.18);
 		glVertex3f(0, 0.2, 0.18);
 		glEnd();
-
 		glPopMatrix();
 	}
 	glPopMatrix();
 
 	glPushMatrix();
-		glTranslatef(x,0.55,z);
-		glRotatef(90,1,0,0);
-		glColor3ub(0,0,0);
-		GLUquadric *quadric = gluNewQuadric();
-		gluCylinder(quadric,0.2,0.2,0.5,20,20);
+	glTranslatef(x,0.55,z);
+	glRotatef(90,1,0,0);
+	glColor3ub(0,0,0);
+	GLUquadric *quadric = gluNewQuadric();
+	gluCylinder(quadric,0.2,0.2,0.5,20,20);
 	glPopMatrix();
-	 
-	//glPushMatrix();
-		//glTranslatef(x-2 , 0.5 , z);
-	//glEnd();
-
 	glColor3f(1,1,1);
 }
 
 void Enviroment::drawpices(){
-
-
-	
-     //p1
-
 	// left 
 	glColor3d(0,0,0);
 	glBegin(GL_QUADS);
@@ -867,9 +829,6 @@ void Enviroment::drawpices(){
 	glVertex3d(19.1, 1, -14.2);
 	glVertex3d(19.1, 0.4, -14.2);
 	glEnd();
-//===================================
-
- /////////PICES RIGHT////////////
 
     //left P1
 	glBegin(GL_QUADS);
@@ -900,7 +859,6 @@ void Enviroment::drawpices(){
 	glVertex3d(19.5, 1, -21);
 	glVertex3d(19.5, 0.4, -21);
 	glEnd();
-//=====================================	
 	//left P2
 	glBegin(GL_QUADS);
 	glVertex3d(19.5, 0.4, -17.8);
@@ -929,7 +887,6 @@ void Enviroment::drawpices(){
 	glVertex3d(19.5, 1, -19);
 	glVertex3d(19.5, 0.4, -19);
 	glEnd();
-//=====================================
 
 	//left P3
 	glBegin(GL_QUADS);
@@ -959,7 +916,6 @@ void Enviroment::drawpices(){
 	glVertex3d(19.5, 1, -16.2);
 	glVertex3d(19.5, 0.4, -16.2);
 	glEnd();
-//======================================
 
 	//left P4
 	glBegin(GL_QUADS);
@@ -991,12 +947,9 @@ void Enviroment::drawpices(){
 	glEnd();
 	glColor3d(1,1,1);
 
-
 }
 
 void Enviroment::drawRamEntrances(int photo){
-
-//////front wall//////////////////
 
 	glColor3d(0,1,0);
 	glEnable(GL_TEXTURE_2D);
@@ -1047,8 +1000,6 @@ void Enviroment::drawRamEntrances(int photo){
 	glVertex3d(19, 0, -12);
 	glEnd();
 	
-//////////back wall////////////////
-
 	//front
 	glBegin(GL_QUADS);
 	glTexCoord2d(0,0);
@@ -1094,8 +1045,6 @@ void Enviroment::drawRamEntrances(int photo){
 	glVertex3d(18.9, 0, -22.2);
 	glEnd();
 
-	////////left wall////////
-	
 	glBegin(GL_QUADS);
 	//right
 	glTexCoord2d(0,0);
@@ -1161,9 +1110,7 @@ void Enviroment::drawRamEntrances(int photo){
 	glTexCoord2d(1,0);
 	glVertex3d(18.9, 0, -22);
 	glEnd();
-	//================================================
 
-	////right wall///////////////////
 	glBegin(GL_QUADS);
 	//right
 	glTexCoord2d(0,0);
@@ -1230,12 +1177,6 @@ void Enviroment::drawRamEntrances(int photo){
 	glTexCoord2d(1,0);
 	glVertex3d(22.2, 0, -22.2);
 	glEnd();
-
-
-
-
-	 
-////right wall 2///////////////////
 
 	glBegin(GL_QUADS);
 	//right
@@ -1293,9 +1234,6 @@ void Enviroment::drawRamEntrances(int photo){
 	glVertex3d(19.8, 0, -11.8);
 	glEnd();
 
-
-
-	////right wall 3///////////////////
 	glBegin(GL_QUADS);
 	//right
 	glTexCoord2d(0,0);
@@ -1351,11 +1289,7 @@ void Enviroment::drawRamEntrances(int photo){
 	glTexCoord2d(1,0);
 	glVertex3d(20.6, 0, -11.8);
 	glEnd();
-
 	
-
-
-	////right wall 4///////////////////
 	glBegin(GL_QUADS);
 	//right
 	glTexCoord2d(0,0);
@@ -1412,13 +1346,7 @@ void Enviroment::drawRamEntrances(int photo){
 	glVertex3d(21.4, 0, -11.8);
 	glEnd();
 	
-
-
-	/////columfront
-	
-
 	// Front
-	
 	
 	glBegin(GL_QUADS);
 	glTexCoord2d(0,0);
@@ -1468,7 +1396,6 @@ void Enviroment::drawRamEntrances(int photo){
 	glTexCoord2d(1,0);
 	glVertex3d(19.5, 1, -12);
 	glEnd();
-	
 
 	// Top
 	glBegin(GL_QUADS);
@@ -1482,10 +1409,6 @@ void Enviroment::drawRamEntrances(int photo){
 	glVertex3d(19.2, 1, -12);
 	glEnd();
 
-
-
-	
-	 ////////////colum right2
 	// Front
 	
 	glBegin(GL_QUADS);
@@ -1536,7 +1459,6 @@ void Enviroment::drawRamEntrances(int photo){
 	glTexCoord2d(1,0);
 	glVertex3d(20.3, 1, -12);
 	glEnd();
-	
 
 	// Top
 	glBegin(GL_QUADS);
@@ -1550,8 +1472,6 @@ void Enviroment::drawRamEntrances(int photo){
 	glVertex3d(20, 1, -12);
 	glEnd();
 
-
-	///////////colum right3
 	// Front
 	
 	glBegin(GL_QUADS);
@@ -1616,9 +1536,7 @@ void Enviroment::drawRamEntrances(int photo){
 	glVertex3d(20.8, 1, -12);
 	glEnd();
 
-  ///////////colum right4
-
-		glBegin(GL_QUADS);
+	glBegin(GL_QUADS);
 	glTexCoord2d(0,0);
 	glVertex3d(21.6, 0, -11.8);
 	glTexCoord2d(0,1);
@@ -1667,7 +1585,6 @@ void Enviroment::drawRamEntrances(int photo){
 	glVertex3d(21.9, 1, -12);
 	glEnd();
 	
-
 	// Top
 	glBegin(GL_QUADS);
 	glTexCoord2d(0,0);
@@ -1680,16 +1597,10 @@ void Enviroment::drawRamEntrances(int photo){
 	glVertex3d(21.6, 1, -12);
 	glEnd();
 	
-	
-
-  
-
-	///back clom ///
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D,photo);
-	
+
 	// Front
-	
 	glBegin(GL_QUADS);
 	glTexCoord2d(0,0);
 	glVertex3d(19.2, 0, -22);
@@ -1752,10 +1663,6 @@ void Enviroment::drawRamEntrances(int photo){
 	glVertex3d(19.2, 1.3, -22.2);
 	glEnd();
 
-
-
-	
-	 ////////////colum right2
 	// Front
 	
 	glBegin(GL_QUADS);
@@ -1886,7 +1793,6 @@ void Enviroment::drawRamEntrances(int photo){
 	glVertex3d(20.8, 1.3, -22.2);
 	glEnd();
 
-  ///////////colum right4
 	//front
 	glBegin(GL_QUADS);
 	glTexCoord2d(0,0);
@@ -1951,230 +1857,3 @@ void Enviroment::drawRamEntrances(int photo){
 	glEnd();
 	 glDisable(GL_TEXTURE_2D);
  }
-
-void Enviroment::drawGPUComponents(int gpuComponent, int gpucomponent2)
-{
-  GLUquadric *quadric = gluNewQuadric();
-  // =================LEFT SIDE ======================
-  glEnable(GL_TEXTURE_2D);
-  // Left
-  glBindTexture(GL_TEXTURE_2D, gpuComponent);
-  glBegin(GL_QUADS);
-  glTexCoord2d(0, 0);
-  glVertex3d(3, 1, -11);
-  glTexCoord2d(1, 0);
-  glVertex3d(3, 1, -11.3);
-  glTexCoord2d(1, 1);
-  glVertex3d(3, 1.5, -11.3);
-  glTexCoord2d(0, 1);
-  glVertex3d(3, 1.5, -11);
-  glEnd();
-
-  // Right
-  glBindTexture(GL_TEXTURE_2D, gpuComponent);
-  glBegin(GL_QUADS);
-  glTexCoord2d(0, 0);
-  glVertex3d(4, 1, -11);
-  glTexCoord2d(1, 0);
-  glVertex3d(4, 1, -11.3);
-  glTexCoord2d(1, 1);
-  glVertex3d(4, 1.5, -11.3);
-  glTexCoord2d(0, 1);
-  glVertex3d(4, 1.5, -11);
-  glEnd();
-
-  // back
-  glBindTexture(GL_TEXTURE_2D, gpuComponent);
-  glBegin(GL_QUADS);
-  glTexCoord2d(0, 0);
-  glVertex3d(3, 1, -11.3);
-  glTexCoord2d(1, 0);
-  glVertex3d(4, 1, -11.3);
-  glTexCoord2d(1, 1);
-  glVertex3d(4, 1.5, -11.3);
-  glTexCoord2d(0, 1);
-  glVertex3d(3, 1.5, -11.3);
-  glEnd();
-
-  // bottom
-  glBindTexture(GL_TEXTURE_2D, gpuComponent);
-  glBegin(GL_QUADS);
-  glTexCoord2d(0, 0);
-  glVertex3d(3, 1, -11);
-  glTexCoord2d(1, 0);
-  glVertex3d(4, 1, -11);
-  glTexCoord2d(1, 1);
-  glVertex3d(4, 1, -11.3);
-  glTexCoord2d(0, 1);
-  glVertex3d(3, 1, -11.3);
-  glEnd();
-
-  //balls
-  glPushMatrix();
-  glTranslated(5, 1.25, -11.3);
-  gluQuadricTexture(quadric, GL_TRUE);
-  glBindTexture(GL_TEXTURE_2D, gpucomponent2);
-  gluSphere(quadric, .2, 20,120);
-  glPopMatrix();
-
-  glDisable(GL_TEXTURE_2D);
-
-  //========================= RIGHT SIDE ======================
-  // Left
-  glEnable(GL_TEXTURE_2D);
-  glBindTexture(GL_TEXTURE_2D, gpuComponent);
-  glBegin(GL_QUADS);
-  glTexCoord2d(0, 0);
-  glVertex3d(3, 1, -13.7);
-  glTexCoord2d(1, 0);
-  glVertex3d(3, 1, -14);
-  glTexCoord2d(1, 1);
-  glVertex3d(3, 1.5, -14);
-  glTexCoord2d(0, 1);
-  glVertex3d(3, 1.5, -13.7);
-  glEnd();
-
-  // Right
-  glBindTexture(GL_TEXTURE_2D, gpuComponent);
-  glBegin(GL_QUADS);
-  glTexCoord2d(0, 0);
-  glVertex3d(4, 1, -13.7);
-  glTexCoord2d(1, 0);
-  glVertex3d(4, 1, -14);
-  glTexCoord2d(1, 1);
-  glVertex3d(4, 1.5, -14);
-  glTexCoord2d(0, 1);
-  glVertex3d(4, 1.5, -13.7);
-  glEnd();
-
-  // front
-  glBindTexture(GL_TEXTURE_2D, gpuComponent);
-  glBegin(GL_QUADS);
-  glTexCoord2d(0, 0);
-  glVertex3d(3, 1, -13.7);
-  glTexCoord2d(1, 0);
-  glVertex3d(4, 1, -13.7);
-  glTexCoord2d(1, 1);
-  glVertex3d(4, 1.5, -13.7);
-  glTexCoord2d(0, 1);
-  glVertex3d(3, 1.5, -13.7);
-  glEnd();
-
-  // bottom
-  glBindTexture(GL_TEXTURE_2D, gpuComponent);
-  glBegin(GL_QUADS);
-  glTexCoord2d(0, 0);
-  glVertex3d(3, 1, -13.7);
-  glTexCoord2d(1, 0);
-  glVertex3d(4, 1, -13.7);
-  glTexCoord2d(1, 1);
-  glVertex3d(4, 1, -14);
-  glTexCoord2d(0, 1);
-  glVertex3d(3, 1, -14);
-  glEnd();
-  //glColor3d(0,0,0);
-  glPushMatrix();
-  gluQuadricTexture(quadric, GL_TRUE);
-  glBindTexture(GL_TEXTURE_2D, gpucomponent2);
-  glTranslated(5, 1.25, -13.7);
-  gluSphere(quadric, .2, 20, 20);
-  glPopMatrix();
-  //glColor3d(1,1,1);
-
-  glDisable(GL_TEXTURE_2D);
-
-  
-
-  glEnable(GL_TEXTURE_2D);
-
-  // Left
-  glBindTexture(GL_TEXTURE_2D, gpuComponent);
-  glBegin(GL_QUADS);
-  glVertex3d(3, 0, -12);
-  glVertex3d(3, 0, -13);
-  glVertex3d(3, .5, -13);
-  glVertex3d(3, .5, -12);
-  glEnd();
-
-  // Right
-  glBindTexture(GL_TEXTURE_2D, gpuComponent);
-  glBegin(GL_QUADS);
-  glTexCoord2d(0, 0);
-  glVertex3d(4, 0, -12);
-  glTexCoord2d(1, 0);
-  glVertex3d(4, 0, -13);
-  glTexCoord2d(1, 1);
-  glVertex3d(4, .5, -13);
-  glTexCoord2d(0, 1);
-  glVertex3d(4, .5, -12);
-  glEnd();
-
-  // top
-  glBindTexture(GL_TEXTURE_2D, gpuComponent);
-  glBegin(GL_QUADS);
-  glTexCoord2d(0, 0);
-  glVertex3d(3, .5, -12);
-  glTexCoord2d(1, 0);
-  glVertex3d(4, .5, -12);
-  glTexCoord2d(1, 1);
-  glVertex3d(4, .5, -13);
-  glTexCoord2d(0, 1);
-  glVertex3d(3, .5, -13);
-  glEnd();
-  //front
-  glBindTexture(GL_TEXTURE_2D, gpuComponent);
-  glBegin(GL_QUADS);
-  glTexCoord2d(0, 0);
-  glVertex3d(3, 0, -12);
-  glTexCoord2d(1, 0);
-  glVertex3d(4, 0, -12);
-  glTexCoord2d(1, 1);
-  glVertex3d(4, .5, -12);
-  glTexCoord2d(0, 1);
-  glVertex3d(3, .5, -12);
-  glEnd();
-
-  //back
-  glBindTexture(GL_TEXTURE_2D, gpuComponent);
-  glBegin(GL_QUADS);
-  glTexCoord2d(0, 0);
-  glVertex3d(3, 0, -13);
-  glTexCoord2d(1, 0);
-  glVertex3d(4, 0, -13);
-  glTexCoord2d(1, 1);
-  glVertex3d(4, .5, -13);
-  glTexCoord2d(0, 1);
-  glVertex3d(3, .5, -13);
-  glEnd();
-  glDisable(GL_TEXTURE_2D);
-}
-
-void Enviroment::drawGPUWires(int wire)
-{
-  GLUquadric *quadric = gluNewQuadric();
-  glEnable(GL_TEXTURE_2D);
-  glPushMatrix();
-  glTranslated(3.5, 1.3, -13.7);
-  gluQuadricTexture(quadric, GL_TRUE);
-  glBindTexture(GL_TEXTURE_2D, wire);
-  gluCylinder(quadric, .01, .01, 2.5, 20, 20);
-  glPopMatrix();
-  glDisable(GL_TEXTURE_2D);
-}
-
-void Enviroment::gpuFloor(int floor)
-{
-  glEnable(GL_TEXTURE_2D);
-  glBindTexture(GL_TEXTURE_2D, floor);
-  glBegin(GL_QUADS);
-  glTexCoord2d(0, 0);
-  glVertex3d(2, .0, -11);
-  glTexCoord2d(1, 0);
-  glVertex3d(16, .0, -11);
-  glTexCoord2d(1, 1);
-  glVertex3d(16, .0, -14);
-  glTexCoord2d(0, 1);
-  glVertex3d(2, .0, -14);
-  glEnd();
-  glDisable(GL_TEXTURE_2D);
-}

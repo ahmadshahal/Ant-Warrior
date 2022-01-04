@@ -21,7 +21,4 @@ public:
 	static void drawpices();
 	static void drawRamEntrances(int photo);
 	static void Room(int room);
-	static void drawGPUComponents(int gpuComponent, int gpucomponent2);
-	static void drawGPUWires(int wire);
-	static void gpuFloor(int floor);
 };
