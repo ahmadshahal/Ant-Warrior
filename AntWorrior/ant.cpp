@@ -3,6 +3,9 @@
 #include "ant.h"
 #include "collision.h"
 
+#define SQR(x) (x*x)
+
+
 Ant::Ant(GLdouble x, GLdouble y, GLdouble z) {
 	handleBorder();
 	this->x = x;
@@ -10,7 +13,7 @@ Ant::Ant(GLdouble x, GLdouble y, GLdouble z) {
 	this->z = z;
 	this->moveForward = 1;
 	this->moveRight = 1;
-	this->rotationAngle = 0 + (double)(rand()) / ((double)(RAND_MAX / (360 - (0))));
+	this->rotationAngle = 0;
 	this->antModel = Model_3DS();
 	this->antTex.LoadBMP("media/black.bmp");
 	this->antModel.Load("media/ant.3ds");
@@ -33,6 +36,15 @@ void Ant::move(GLdouble myX, GLdouble myZ) {
 
 	myX -= this->x;
 	myZ -= this->z;
+
+	const float transfer = (180.0 / 3.141592653589793238463);
+	float length = (sqrt(SQR(myX) + SQR(myZ)));
+	GLdouble newLookX =  myX = myX / length;
+	GLdouble newLookZ = (myZ / length)*-1;
+	float angle = atan2(newLookZ, newLookX);
+	float rotation_angle = (angle * transfer) + 270;
+	this->rotationAngle = rotation_angle;
+
 	GLdouble toAddX = 0.0007 * myX;
 	GLdouble toAddZ = 0.0007 * myZ;
 	GLdouble newX = this->x + toAddX;

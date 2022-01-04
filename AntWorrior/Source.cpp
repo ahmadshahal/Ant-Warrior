@@ -393,8 +393,8 @@ int DrawGLScene(GLvoid) // Here's Where We Do All The Drawing
 	}
 
 	for(set<Ant*>::iterator it = ants.begin(); it != ants.end(); it++) {
-		(*it)->draw();
 		(*it)->move(myCamera.Position.x, myCamera.Position.z);
+		(*it)->draw();
 	}
 
 	glScaled(SCALE, SCALE, SCALE);
