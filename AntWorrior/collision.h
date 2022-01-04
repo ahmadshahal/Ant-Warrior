@@ -55,8 +55,8 @@ static void handleBorder(){
 	}
 	// ========================================
 	// CPU
-	for(int i = 2362; i < 3097; i++){
-		for(int j = 402; j < 1137; j++){
+	for(int i = 2344; i < 3115; i++){
+		for(int j = 384; j < 1155; j++){
 			border[i][j] = 0;
 		}
 	}
@@ -113,15 +113,10 @@ static void handleBorder(){
 
 	// ========================================
 	// RAM
-	for(int i = 2642; i < 3307; i += 210){
-		for(int j = i; j < i + 105; j++){
-			border[j][1522] = 0 ;
-			border[j][3237] = 0 ;
-		}
-		for(int j = 1522; j < 3237; j++){
-			border[i][j] = 0;
-			border[i + 105][j] = 0;
-		}
+	for(int i = 2640; i < 3310; i ++){
+		for(int j = 1630 ; j < 3130; j++){
+			border[i][j] = 0 ;
+		}	
 	}
 	// RAM Glass
 	for(int i = 2432; i < 3500; i++){
@@ -191,6 +186,18 @@ static void handleBorder(){
 	// Transistor 2
 	for(int i = 1522; i < 1697; i++){
 		for(int j = 542; j < 717; j++){
+			border[i][j] = 0;
+		}
+	}
+	//Capacitor
+	for(int i = 3300; i <= 3420 ; i ++ ){
+		for(int j = 500 ; j <= 620 ; j++ ){
+			border[i][j] = 0;
+		}
+	}
+
+	for(int i = 3300 ; i <= 3420 ; i++ ) {
+		for(int j = 1050 ; j <= 1180 ; j++) {
 			border[i][j] = 0;
 		}
 	}
