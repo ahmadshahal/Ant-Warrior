@@ -46,7 +46,6 @@ time_t shootingSoundStartTime;
 
 INIT initialize = INIT(); // Sound Initialize
 Sound shootingSound;
-Sound sound2;
 
 GLUquadric *quadric = gluNewQuadric();
 
@@ -99,10 +98,10 @@ void initAnts() {
 				&& border[x * SCALE - 10][z * SCALE - 10] != 0 && border[x * SCALE - 10][z * SCALE - 10] != 2
 				&& border[x * SCALE + 10][z * SCALE - 10] != 0 && border[x * SCALE + 10][z * SCALE - 10] != 2
 				&& border[x * SCALE - 10][z * SCALE + 10] != 0 && border[x * SCALE - 10][z * SCALE + 10] != 2
-				&& (z * SCALE > myCamera.Position.z + 1 * SCALE * -1
-				|| z * SCALE < myCamera.Position.z - 1 * SCALE * -1
-				|| x * SCALE > myCamera.Position.x + 1 * SCALE
-				|| x * SCALE < myCamera.Position.x - 1 * SCALE)) {
+				&& (z * SCALE > myCamera.Position.z + 4 * SCALE * -1
+				|| z * SCALE < myCamera.Position.z - 4 * SCALE * -1
+				|| x * SCALE > myCamera.Position.x + 4 * SCALE
+				|| x * SCALE < myCamera.Position.x - 4 * SCALE)) {
 				ants.insert(new Ant(x * SCALE, 0.12 * SCALE, z * SCALE * -1));
 				break;
 			}
@@ -142,7 +141,6 @@ int InitGL(GLvoid) // All Setup For OpenGL Goes Here
 	buttonTex = LoadTexture("media/button.bmp");
 	initialize.InitOpenAL(); // initialize sound from OpenAl
 	shootingSound = Sound("media/shot.wav");
-	sound2 = Sound("media/music.wav");
 	
 	handleBorder();
 	person = new Person();
@@ -181,8 +179,6 @@ void handleKeybordInput()
         myCamera.MoveRight(-1);
     if (keys['D'])
         myCamera.MoveRight(1);
-	if (keys['M'])
-		sound2.Play();
 	if(keys[VK_SPACE] && canFire) {
 		shootingSound.Play();
 		shootingSoundIsPlaying = true;
