@@ -1,5 +1,5 @@
 ## Intro
-Ant Worrior is a University Project created by a group of students in their 3rd year at Damascus University.
+Ant Warrior is a University Project created by a group of students in their 3rd year at Damascus University.
 
 ## Technologies
 * The game is built using Legacy OpenGL graphics.
