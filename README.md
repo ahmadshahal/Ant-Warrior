@@ -2,7 +2,7 @@
 Ant Warrior is a University Project created by a group of students in their 3rd year at Damascus University.
 
 ## Technologies
-* The game is built using Legacy OpenGL graphics.
+* The game is built using Legacy OpenGL implemented using NEHE template.
 * All Physics and Mathematics used were implemented and tested by us.
 
 ## Features
