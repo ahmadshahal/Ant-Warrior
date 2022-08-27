@@ -2,7 +2,7 @@
 Ant Worrior is a University Project created by a group of students in their 3rd year at Damascus University.
 
 ## Technologies
-* The simulator is built using Legacy OpenGL graphics.
+* The game is built using Legacy OpenGL graphics.
 * All Physics and Mathematics used were implemented and tested by us.
 
 ## Features
