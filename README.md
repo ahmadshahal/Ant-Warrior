@@ -7,6 +7,8 @@ Ant Warrior is a University Project created by a group of students in their 3rd 
 
 ## Features
 * The story of the game is that a bunch of ants invaded a computer and the player should destroy them all.
+* Collision.
+* Sounds.
 
 ## Setup
 I advice you not to setup OpenGl on your computer and don't ever try to install it😅, as it would take several days to do so.
